@@ -140,83 +140,94 @@
 	});
 </script>
 
-<AppShell>
-	<svelte:fragment slot="header">
-		<AppBar>
-			<svelte:fragment slot="lead">
-				<strong class="text-xl uppercase">AI Cost Simulator</strong>
-			</svelte:fragment>
-			<svelte:fragment slot="trail">
-				<Avatar initials="AI" />
-			</svelte:fragment>
-		</AppBar>
-	</svelte:fragment>
-
-	<div class="container mx-auto p-4 space-y-8">
-		<h1 class="h1">Generative AI API Cost Simulator</h1>
-
-		<div class="card p-4 variant-soft">
-			<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-				<label class="label">
-					<span>System Tokens:</span>
-					<input type="number" bind:value={systemTokens} min="0" class="input" />
-				</label>
-				<label class="label">
-					<span>Input Tokens:</span>
-					<input type="number" bind:value={inputTokens} min="0" class="input" />
-				</label>
-				<label class="label">
-					<span>Output Tokens:</span>
-					<input type="number" bind:value={outputTokens} min="0" class="input" />
-				</label>
-				<label class="label">
-					<span>Iterations:</span>
-					<input type="number" bind:value={iterations} min="1" class="input" />
-				</label>
+<header class="bg-gradient-to-r from-blue-600 to-indigo-800 text-white py-2 px-4 shadow-lg">
+	<div class="container mx-auto">
+		<div class="flex items-center space-x-4">
+			<svg
+				class="w-12 h-12 text-yellow-300"
+				fill="currentColor"
+				viewBox="0 0 20 20"
+				xmlns="http://www.w3.org/2000/svg"
+			>
+				<path d="M13 7H7v6h6V7z" />
+				<path
+					fill-rule="evenodd"
+					d="M7 2a1 1 0 012 0v1h2V2a1 1 0 112 0v1h2a2 2 0 012 2v2h1a1 1 0 110 2h-1v2h1a1 1 0 110 2h-1v2a2 2 0 01-2 2h-2v1a1 1 0 11-2 0v-1H9v1a1 1 0 11-2 0v-1H5a2 2 0 01-2-2v-2H2a1 1 0 110-2h1V9H2a1 1 0 010-2h1V5a2 2 0 012-2h2V2zM5 5h10v10H5V5z"
+					clip-rule="evenodd"
+				/>
+			</svg>
+			<div>
+				<h1 class="text-4xl font-extrabold tracking-tight">
+					<span class="block">AI Cost Calculator</span>
+					<span class="block text-yellow-300 text-2xl mt-1">Generative AI API Cost Simulator</span>
+				</h1>
 			</div>
 		</div>
-
-		<div class="card p-4 variant-soft">
-			<canvas bind:this={chartCanvas} id="costChart"></canvas>
-		</div>
-
-		{#if results.length > 0}
-			<div class="card p-4 variant-soft">
-				<h2 class="h2 mb-4">Final Results</h2>
-				<div class="flex flex-wrap gap-4 mb-4">
-					<div>
-						<span class="font-bold">Total Input Tokens:</span>
-						<span>{inputTotalTokens.toLocaleString()}</span>
-					</div>
-					<div>
-						<span class="font-bold">Total Output Tokens:</span>
-						<span>{outputTotalTokens.toLocaleString()}</span>
-					</div>
-				</div>
-				<div class="table-container">
-					<table class="table table-hover">
-						<thead>
-							<tr>
-								<th class="table-cell-fit">Model Name</th>
-								<th class="text-right">Input Cost (USD)</th>
-								<th class="text-right">Output Cost (USD)</th>
-								<th class="text-right">Total Cost (USD)</th>
-							</tr>
-						</thead>
-						<tbody>
-							{#each modelData as model}
-								{@const costs = calculateModelCosts(model, inputTotalTokens, outputTotalTokens)}
-								<tr>
-									<td class="table-cell-fit">{model.name}</td>
-									<td class="text-right">${costs.inputCost.toFixed(2)}</td>
-									<td class="text-right">${costs.outputCost.toFixed(2)}</td>
-									<td class="text-right">${costs.totalCost.toFixed(2)}</td>
-								</tr>
-							{/each}
-						</tbody>
-					</table>
-				</div>
-			</div>
-		{/if}
 	</div>
-</AppShell>
+</header>
+
+<div class="container mx-auto p-4 space-y-8">
+	<div class="card p-4 variant-soft">
+		<div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+			<label class="label">
+				<span>System Tokens:</span>
+				<input type="number" bind:value={systemTokens} min="0" class="input" />
+			</label>
+			<label class="label">
+				<span>Input Tokens:</span>
+				<input type="number" bind:value={inputTokens} min="0" class="input" />
+			</label>
+			<label class="label">
+				<span>Output Tokens:</span>
+				<input type="number" bind:value={outputTokens} min="0" class="input" />
+			</label>
+			<label class="label">
+				<span>Iterations:</span>
+				<input type="number" bind:value={iterations} min="1" class="input" />
+			</label>
+		</div>
+	</div>
+
+	<div class="card p-4 variant-soft">
+		<canvas bind:this={chartCanvas} id="costChart"></canvas>
+	</div>
+
+	{#if results.length > 0}
+		<div class="card p-4 variant-soft">
+			<h2 class="h2 mb-4">Final Results</h2>
+			<div class="flex flex-wrap gap-4 mb-4">
+				<div>
+					<span class="font-bold">Total Input Tokens:</span>
+					<span>{inputTotalTokens.toLocaleString()}</span>
+				</div>
+				<div>
+					<span class="font-bold">Total Output Tokens:</span>
+					<span>{outputTotalTokens.toLocaleString()}</span>
+				</div>
+			</div>
+			<div class="table-container">
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<th class="table-cell-fit">Model Name</th>
+							<th class="text-right">Input Cost (USD)</th>
+							<th class="text-right">Output Cost (USD)</th>
+							<th class="text-right">Total Cost (USD)</th>
+						</tr>
+					</thead>
+					<tbody>
+						{#each modelData as model}
+							{@const costs = calculateModelCosts(model, inputTotalTokens, outputTotalTokens)}
+							<tr>
+								<td class="table-cell-fit">{model.name}</td>
+								<td class="text-right">${costs.inputCost.toFixed(2)}</td>
+								<td class="text-right">${costs.outputCost.toFixed(2)}</td>
+								<td class="text-right">${costs.totalCost.toFixed(2)}</td>
+							</tr>
+						{/each}
+					</tbody>
+				</table>
+			</div>
+		</div>
+	{/if}
+</div>
