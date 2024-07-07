@@ -17,26 +17,28 @@
 	const oneMillion = 1000000;
 
 	let tokenConvertRate = 4.0;
-	const modelData = [
+	let modelData = [
 		// 費用は100万トークンあたりのUSD価格
 		// OpenAI
-		{ name: 'gpt-4o', inputCost: 5.0, outputCost: 15.0 },
-		{ name: 'gpt-3.5-turbo', inputCost: 0.5, outputCost: 1.5 },
-		{ name: 'gpt-3.5-turbo(fine-tuning)', inputCost: 3.0, outputCost: 6.0 },
+		{ name: 'gpt-4o', inputCost: 5.0, outputCost: 15.0, active: true },
+		{ name: 'gpt-3.5-turbo', inputCost: 0.5, outputCost: 1.5, active: true },
+		{ name: 'gpt-3.5-turbo(fine-tuning)', inputCost: 3.0, outputCost: 6.0, active: true },
 		// Anthropic
-		{ name: 'claude-3-opus', inputCost: 15.0, outputCost: 75.0 },
-		{ name: 'claude-3-5-sonnet', inputCost: 3.0, outputCost: 15.0 },
-		{ name: 'claude-3-haiku', inputCost: 0.25, outputCost: 1.25 },
+		{ name: 'claude-3-opus', inputCost: 15.0, outputCost: 75.0, active: false },
+		{ name: 'claude-3-5-sonnet', inputCost: 3.0, outputCost: 15.0, active: true },
+		{ name: 'claude-3-haiku', inputCost: 0.25, outputCost: 1.25, active: true },
 		// Google
 		{
 			name: 'gemini-1.5-pro',
 			inputCost: 0.000001 * tokenConvertRate,
-			outputCost: 0.000001 * tokenConvertRate
+			outputCost: 0.000001 * tokenConvertRate,
+			active: true
 		},
 		{
 			name: 'gemini-1.5-flash',
 			inputCost: 0.375 * tokenConvertRate,
-			outputCost: 0.75 * tokenConvertRate
+			outputCost: 0.75 * tokenConvertRate,
+			active: true
 		}
 	];
 
@@ -107,7 +109,8 @@
 			data: results.map((result) => result[model.name]),
 			borderColor: colors[model.name],
 			backgroundColor: colors[model.name],
-			fill: false
+			fill: false,
+			hidden: !model.active // ここで初期表示状態を設定
 		}));
 
 		chart = new Chart(ctx, {
