@@ -111,13 +111,14 @@
 		}));
 
 		chart = new Chart(ctx, {
-			type: 'line', // グラフのタイプを 'line' に変更
+			type: 'line',
 			data: {
 				labels: results.map((result) => result.iteration),
 				datasets: datasets
 			},
 			options: {
 				responsive: true,
+				maintainAspectRatio: false,
 				scales: {
 					x: {
 						title: {
@@ -134,6 +135,16 @@
 							callback: function (value: number | string) {
 								return '$' + Number(value).toFixed(2);
 							}
+						}
+					}
+				},
+				plugins: {
+					legend: {
+						position: 'top',
+						labels: {
+							boxWidth: 12,
+							usePointStyle: true,
+							pointStyle: 'circle'
 						}
 					}
 				}
