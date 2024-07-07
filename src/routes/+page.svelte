@@ -212,19 +212,19 @@
 					<thead>
 						<tr>
 							<th class="table-cell-fit">Model Name</th>
-							<th class="text-right">Input Cost (USD)</th>
-							<th class="text-right">Output Cost (USD)</th>
-							<th class="text-right">Total Cost (USD)</th>
+							<th class="text-right">Input (USD)</th>
+							<th class="text-right">Output (USD)</th>
+							<th class="text-right">Total (USD)</th>
 						</tr>
 					</thead>
 					<tbody>
 						{#each modelData as model}
 							{@const costs = calculateModelCosts(model, inputTotalTokens, outputTotalTokens)}
-							<tr>
-								<td class="table-cell-fit">{model.name}</td>
-								<td class="text-right">${costs.inputCost.toFixed(2)}</td>
-								<td class="text-right">${costs.outputCost.toFixed(2)}</td>
-								<td class="text-right">${costs.totalCost.toFixed(2)}</td>
+							<tr class="custom-font-lg">
+								<td class="custom-font-lg w-1/2">{model.name}</td>
+								<td class="text-right custom-font-lg w-1/6">${costs.inputCost.toFixed(2)}</td>
+								<td class="text-right custom-font-lg w-1/6">${costs.outputCost.toFixed(2)}</td>
+								<td class="text-right custom-font-lg">${costs.totalCost.toFixed(2)}</td>
 							</tr>
 						{/each}
 					</tbody>
@@ -233,3 +233,12 @@
 		</div>
 	{/if}
 </div>
+
+<style>
+	.custom-font-base {
+		font-size: 1rem !important;
+	}
+	.custom-font-lg {
+		font-size: 1.125rem !important;
+	}
+</style>
