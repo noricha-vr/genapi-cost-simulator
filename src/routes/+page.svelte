@@ -126,17 +126,31 @@
 					x: {
 						title: {
 							display: true,
-							text: 'Iteration'
+							text: 'Iteration',
+							font: {
+								size: 14 // フォントサイズを大きくする
+							}
+						},
+						ticks: {
+							font: {
+								size: 12 // 軸のラベルのフォントサイズを大きくする
+							}
 						}
 					},
 					y: {
 						title: {
 							display: true,
-							text: 'Cumulative Cost ($)'
+							text: 'Cumulative Cost ($)',
+							font: {
+								size: 14 // フォントサイズを大きくする
+							}
 						},
 						ticks: {
 							callback: function (value: number | string) {
 								return '$' + Number(value).toFixed(2);
+							},
+							font: {
+								size: 14 // 軸のラベルのフォントサイズを大きくする
 							}
 						}
 					}
@@ -147,7 +161,10 @@
 						labels: {
 							boxWidth: 12,
 							usePointStyle: true,
-							pointStyle: 'circle'
+							pointStyle: 'circle',
+							font: {
+								size: 14 // 凡例のフォントサイズを大きくする
+							}
 						}
 					}
 				}
