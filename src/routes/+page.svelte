@@ -158,7 +158,7 @@
 			<div>
 				<h1 class="text-4xl font-extrabold tracking-tight">
 					<span class="block">AI Cost Calculator</span>
-					<span class="block text-yellow-300 text-2xl mt-1">Generative AI API Cost Simulator</span>
+					<span class="block text-yellow-300 text-2xl mt-1">Generative AI API Cost Simulation</span>
 				</h1>
 			</div>
 		</div>
