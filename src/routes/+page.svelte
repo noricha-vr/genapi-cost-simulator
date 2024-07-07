@@ -47,6 +47,9 @@
 		);
 
 		results = [];
+		inputTotalTokens = 0;
+		outputTotalTokens = 0;
+
 		let cumulativeTokens = 0;
 		let previousCost = 0;
 		for (let i = 0; i < iterations; i++) {
@@ -56,8 +59,8 @@
 			let cumulativeCost = 0;
 			modelData.forEach((model) => {
 				const inputCost =
-					((systemTokens + inputTokens + cumulativeTokens) * model.inputCost) / 1000 / 1000;
-				const outputCost = (outputTokens * model.outputCost) / 1000 / 1000;
+					((systemTokens + inputTokens + cumulativeTokens) * model.inputCost) / 1000000;
+				const outputCost = (outputTokens * model.outputCost) / 1000000;
 				const currentCost = inputCost + outputCost;
 				cumulativeCost = currentCost + previousCost;
 				iterationResult[`${model.name}`] = cumulativeCost;
@@ -124,6 +127,13 @@
 		return '#' + Math.floor(Math.random() * 16777215).toString(16);
 	}
 
+	function calculateModelCosts(model: any, inputTokens: number, outputTokens: number) {
+		const inputCost = (inputTokens * model.inputCost) / 1000000;
+		const outputCost = (outputTokens * model.outputCost) / 1000000;
+		const totalCost = inputCost + outputCost;
+		return { inputCost, outputCost, totalCost };
+	}
+
 	onMount(() => {
 		calculateAICosts();
 	});
@@ -157,14 +167,38 @@
 
 	<div class="mb-5">
 		{#if results.length > 0}
-			<h2 class="text-xl font-semibold mb-2">Final Results:</h2>
-			<p>Input Total Tokens: {inputTotalTokens} ({inputTotalTokens / 1000000}M)</p>
-			<p>Output Total Tokens: {outputTotalTokens} ({outputTotalTokens / 1000000}M)</p>
-			{#each modelData as model}
-				<p>
-					{model.name} Cumulative Cost: ${results[results.length - 1][`${model.name}`].toFixed(2)}
-				</p>
-			{/each}
+			<h2 class="text-xl font-semibold">Final Results</h2>
+			<div class="flex mb-2 text-gray-200">
+				<div class="mr-2">
+					<span class="text-sm">Total Input Tokens:</span>
+					<span class="text-base font-medium">{inputTotalTokens.toLocaleString()}</span>
+				</div>
+				<div>
+					<span class="text-sm">Total Output Tokens:</span>
+					<span class="text-base font-medium">{outputTotalTokens.toLocaleString()}</span>
+				</div>
+			</div>
+			<table class="w-full border-collapse border border-gray-3000">
+				<thead>
+					<tr class="">
+						<th class="border border-gray-300 p-2">Model Name</th>
+						<th class="border border-gray-300 p-2">Input Cost (USD)</th>
+						<th class="border border-gray-300 p-2">Output Cost (USD)</th>
+						<th class="border border-gray-300 p-2">Total Cost (USD)</th>
+					</tr>
+				</thead>
+				<tbody>
+					{#each modelData as model}
+						{@const costs = calculateModelCosts(model, inputTotalTokens, outputTotalTokens)}
+						<tr>
+							<td class="border border-gray-300 p-2">{model.name}</td>
+							<td class="border border-gray-300 p-2">{costs.inputCost.toFixed(2)}</td>
+							<td class="border border-gray-300 p-2">{costs.outputCost.toFixed(2)}</td>
+							<td class="border border-gray-300 p-2">{costs.totalCost.toFixed(2)}</td>
+						</tr>
+					{/each}
+				</tbody>
+			</table>
 		{/if}
 	</div>
 </main>
