@@ -14,16 +14,28 @@
 	let results: any[] = [];
 	let chartCanvas: HTMLCanvasElement;
 
+	let tokenConvertRate = 4.0;
 	const modelData = [
 		// 費用は100万トークンあたりのUSD価格
 		// OpenAI
-		{ name: 'gpt-4o-2024-05-13', inputCost: 5.0, outputCost: 15.0 },
-		{ name: 'gpt-3.5-turbo-0125', inputCost: 0.5, outputCost: 1.5 },
+		{ name: 'gpt-4o', inputCost: 5.0, outputCost: 15.0 },
+		{ name: 'gpt-3.5-turbo', inputCost: 0.5, outputCost: 1.5 },
 		{ name: 'gpt-3.5-turbo(fine-tuning)', inputCost: 3.0, outputCost: 6.0 },
 		// Anthropic
-		{ name: 'claude-3-opus-20240229', inputCost: 15.0, outputCost: 75.0 },
-		{ name: 'claude-3-5-sonnet-20240620', inputCost: 3.0, outputCost: 15.0 },
-		{ name: 'claude-3-haiku-20240307', inputCost: 0.25, outputCost: 1.25 }
+		{ name: 'claude-3-opus', inputCost: 15.0, outputCost: 75.0 },
+		{ name: 'claude-3-5-sonnet', inputCost: 3.0, outputCost: 15.0 },
+		{ name: 'claude-3-haiku', inputCost: 0.25, outputCost: 1.25 },
+		// Google
+		{
+			name: 'gemini-1.5-pro',
+			inputCost: 0.000001 * tokenConvertRate,
+			outputCost: 0.000001 * tokenConvertRate
+		},
+		{
+			name: 'gemini-1.5-flash',
+			inputCost: 0.375 * tokenConvertRate,
+			outputCost: 0.75 * tokenConvertRate
+		}
 	];
 
 	// 色を保持するための状態変数
@@ -157,6 +169,7 @@
 				fill="currentColor"
 				viewBox="0 0 20 20"
 				xmlns="http://www.w3.org/2000/svg"
+				alt="AI Cost Simulator Logo"
 			>
 				<path d="M13 7H7v6h6V7z" />
 				<path
@@ -190,7 +203,7 @@
 			</label>
 			<label class="label">
 				<span>Iterations:</span>
-				<input type="number" bind:value={iterations} min="1" class="input" />
+				<input type="number" bind:value={iterations} min="1" max="9999" class="input" />
 			</label>
 		</div>
 	</div>
