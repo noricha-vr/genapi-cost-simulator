@@ -196,7 +196,7 @@
 	</div>
 
 	<div class="card p-4 variant-soft w-full">
-		<div class="w-full h-96">
+		<div class="w-full h-96 md:h-128">
 			<canvas
 				bind:this={chartCanvas}
 				class="w-full h-full"
