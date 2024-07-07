@@ -18,7 +18,14 @@
 	];
 
 	$: {
-		calculateAICosts();
+		if (
+			systemTokens !== undefined &&
+			inputTokens !== undefined &&
+			outputTokens !== undefined &&
+			iterations !== undefined
+		) {
+			calculateAICosts();
+		}
 	}
 
 	$: if (results.length > 0 && chartCanvas) {
