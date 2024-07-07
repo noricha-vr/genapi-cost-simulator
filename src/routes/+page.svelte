@@ -22,7 +22,7 @@
 		// OpenAI
 		{ name: 'gpt-4o', inputCost: 5.0, outputCost: 15.0, active: true },
 		{ name: 'gpt-3.5-turbo', inputCost: 0.5, outputCost: 1.5, active: true },
-		{ name: 'gpt-3.5-turbo(fine-tuning)', inputCost: 3.0, outputCost: 6.0, active: true },
+		{ name: 'gpt-3.5-turbo(fine-tuning)', inputCost: 3.0, outputCost: 6.0, active: false },
 		// Anthropic
 		{ name: 'claude-3-opus', inputCost: 15.0, outputCost: 75.0, active: false },
 		{ name: 'claude-3-5-sonnet', inputCost: 3.0, outputCost: 15.0, active: true },
