@@ -189,7 +189,9 @@
 	</div>
 
 	<div class="card p-4 variant-soft">
-		<canvas bind:this={chartCanvas} id="costChart"></canvas>
+		<div class="w-full h-96">
+			<canvas bind:this={chartCanvas} class="w-full h-full"></canvas>
+		</div>
 	</div>
 
 	{#if results.length > 0}
