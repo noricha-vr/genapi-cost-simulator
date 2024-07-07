@@ -85,15 +85,18 @@
 			return;
 		}
 
+		const isFirstIteration = results[0]?.iteration === 1;
+
 		const datasets = modelData.map((model) => ({
 			label: model.name,
 			data: results.map((result) => result[model.name]),
 			borderColor: getRandomColor(),
+			backgroundColor: getRandomColor(),
 			fill: false
 		}));
 
 		chart = new Chart(ctx, {
-			type: 'line',
+			type: isFirstIteration ? 'bar' : 'line',
 			data: {
 				labels: results.map((result) => result.iteration),
 				datasets: datasets
