@@ -41,26 +41,25 @@
 		);
 
 		results = [];
-		let lastIterationResult: any = {};
+		let cumulativeTokens = 0;
+		let previousCost = 0;
 		for (let i = 0; i < iterations; i++) {
 			const iterationResult: any = {
 				iteration: i + 1
 			};
 			modelData.forEach((model) => {
-				const lastTokens =
-					(lastIterationResult['inputTokens'] || 0) + (lastIterationResult['outputTokens'] || 0);
-				console.log(`Last Tokens: ${lastTokens}`);
-				const inputCost = (systemTokens + inputTokens + lastTokens) * model.inputCost;
+				const inputCost = (systemTokens + inputTokens + cumulativeTokens) * model.inputCost;
 				const outputCost = outputTokens * model.outputCost;
 				const currentCost = inputCost + outputCost;
-				const previousCost = i > 0 ? results[i - 1][model.name] : 0;
-				const totalCost = currentCost + previousCost;
+				const cumulativeCost = currentCost + previousCost;
+				previousCost = cumulativeCost;
 
-				iterationResult[model.name] = totalCost;
-				iterationResult[`${model.name}TotalCost`] = totalCost;
+				// iterationResult[`${model.name}InputCost`] = inputCost;
+				// iterationResult[`${model.name}OutputCost`] = outputCost;
+				iterationResult[`${model.name}`] = cumulativeCost;
 			});
 			results.push(iterationResult);
-			lastIterationResult = iterationResult;
+			cumulativeTokens += inputTokens + outputTokens;
 		}
 		console.log(results);
 	}
@@ -156,7 +155,7 @@
 			<p>Output Total Tokens: {outputTotalTokens}</p>
 			{#each modelData as model}
 				<p>
-					{model.name} Cumulative Cost: ${results[results.length - 1][model.name].toFixed(6)}
+					{model.name} Cumulative Cost: ${results[results.length - 1][`${model.name}`].toFixed(2)}
 				</p>
 			{/each}
 		{/if}
