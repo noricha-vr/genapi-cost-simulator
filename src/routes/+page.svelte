@@ -53,9 +53,6 @@
 				const currentCost = inputCost + outputCost;
 				const cumulativeCost = currentCost + previousCost;
 				previousCost = cumulativeCost;
-
-				// iterationResult[`${model.name}InputCost`] = inputCost;
-				// iterationResult[`${model.name}OutputCost`] = outputCost;
 				iterationResult[`${model.name}`] = cumulativeCost;
 			});
 			results.push(iterationResult);
