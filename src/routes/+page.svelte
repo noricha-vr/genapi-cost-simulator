@@ -166,6 +166,15 @@
 		return { inputCost, outputCost, totalCost };
 	}
 
+	function toggleModelVisibility(modelName: string) {
+		const modelIndex = modelData.findIndex((m) => m.name === modelName);
+		if (modelIndex !== -1) {
+			modelData[modelIndex] = { ...modelData[modelIndex], active: !modelData[modelIndex].active };
+			modelData = [...modelData]; // Trigger reactivity
+			updateChart();
+		}
+	}
+
 	onMount(() => {
 		// 初回読み込み時に色を生成し、状態変数に保存
 		modelData.forEach((model) => {
@@ -249,6 +258,7 @@
 				<table class="table table-hover">
 					<thead>
 						<tr>
+							<th class=""></th>
 							<th class="table-cell-fit">Model Name</th>
 							<th class="text-right">Input (USD)</th>
 							<th class="text-right">Output (USD)</th>
@@ -258,7 +268,8 @@
 					<tbody>
 						{#each modelData as model}
 							{@const costs = calculateModelCosts(model, inputTotalTokens, outputTotalTokens)}
-							<tr class="custom-font-lg">
+							<tr class="custom-font-lg" on:click={() => toggleModelVisibility(model.name)}>
+								<td class="custom-font-lg">{model.active ? '✔' : ''}</td>
 								<td class="custom-font-lg w-1/2">{model.name}</td>
 								<td class="text-right custom-font-lg w-1/6">${costs.inputCost.toFixed(2)}</td>
 								<td class="text-right custom-font-lg w-1/6">${costs.outputCost.toFixed(2)}</td>
