@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import Chart from 'chart.js/auto';
+	import { AppShell, AppBar, ListNav, Avatar } from '@skeletonlabs/skeleton';
 
 	let systemTokens = 500;
 	let inputTokens = 100;
@@ -139,65 +140,83 @@
 	});
 </script>
 
-<main class="max-w-3xl mx-auto p-5 font-sans">
-	<h1 class="text-2xl font-bold mb-4">Generative AI API Cost Simulator</h1>
-	<div class="grid gap-4 mb-5">
-		<label class="flex justify-between items-center">
-			System Tokens:
-			<input type="number" bind:value={systemTokens} min="0" class="w-24 p-1 border rounded" />
-		</label>
-		<label class="flex justify-between items-center">
-			Input Tokens:
-			<input type="number" bind:value={inputTokens} min="0" class="w-24 p-1 border rounded" />
-		</label>
-		<label class="flex justify-between items-center">
-			Output Tokens:
-			<input type="number" bind:value={outputTokens} min="0" class="w-24 p-1 border rounded" />
-		</label>
-		<label class="flex justify-between items-center">
-			Iterations:
-			<input type="number" bind:value={iterations} min="1" class="w-24 p-1 border rounded" />
-		</label>
-	</div>
+<AppShell>
+	<svelte:fragment slot="header">
+		<AppBar>
+			<svelte:fragment slot="lead">
+				<strong class="text-xl uppercase">AI Cost Simulator</strong>
+			</svelte:fragment>
+			<svelte:fragment slot="trail">
+				<Avatar initials="AI" />
+			</svelte:fragment>
+		</AppBar>
+	</svelte:fragment>
 
-	<div class="mb-5">
-		<canvas bind:this={chartCanvas} id="costChart"></canvas>
-	</div>
+	<div class="container mx-auto p-4 space-y-8">
+		<h1 class="h1">Generative AI API Cost Simulator</h1>
 
-	<div class="mb-5">
+		<div class="card p-4 variant-soft">
+			<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+				<label class="label">
+					<span>System Tokens:</span>
+					<input type="number" bind:value={systemTokens} min="0" class="input" />
+				</label>
+				<label class="label">
+					<span>Input Tokens:</span>
+					<input type="number" bind:value={inputTokens} min="0" class="input" />
+				</label>
+				<label class="label">
+					<span>Output Tokens:</span>
+					<input type="number" bind:value={outputTokens} min="0" class="input" />
+				</label>
+				<label class="label">
+					<span>Iterations:</span>
+					<input type="number" bind:value={iterations} min="1" class="input" />
+				</label>
+			</div>
+		</div>
+
+		<div class="card p-4 variant-soft">
+			<canvas bind:this={chartCanvas} id="costChart"></canvas>
+		</div>
+
 		{#if results.length > 0}
-			<h2 class="text-xl font-semibold">Final Results</h2>
-			<div class="flex mb-2">
-				<div class="mr-2">
-					<span class="text-sm">Total Input Tokens:</span>
-					<span class="text-base font-medium">{inputTotalTokens.toLocaleString()}</span>
+			<div class="card p-4 variant-soft">
+				<h2 class="h2 mb-4">Final Results</h2>
+				<div class="flex flex-wrap gap-4 mb-4">
+					<div>
+						<span class="font-bold">Total Input Tokens:</span>
+						<span>{inputTotalTokens.toLocaleString()}</span>
+					</div>
+					<div>
+						<span class="font-bold">Total Output Tokens:</span>
+						<span>{outputTotalTokens.toLocaleString()}</span>
+					</div>
 				</div>
-				<div>
-					<span class="text-sm">Total Output Tokens:</span>
-					<span class="text-base font-medium">{outputTotalTokens.toLocaleString()}</span>
+				<div class="table-container">
+					<table class="table table-hover">
+						<thead>
+							<tr>
+								<th class="table-cell-fit">Model Name</th>
+								<th class="text-right">Input Cost (USD)</th>
+								<th class="text-right">Output Cost (USD)</th>
+								<th class="text-right">Total Cost (USD)</th>
+							</tr>
+						</thead>
+						<tbody>
+							{#each modelData as model}
+								{@const costs = calculateModelCosts(model, inputTotalTokens, outputTotalTokens)}
+								<tr>
+									<td class="table-cell-fit">{model.name}</td>
+									<td class="text-right">${costs.inputCost.toFixed(2)}</td>
+									<td class="text-right">${costs.outputCost.toFixed(2)}</td>
+									<td class="text-right">${costs.totalCost.toFixed(2)}</td>
+								</tr>
+							{/each}
+						</tbody>
+					</table>
 				</div>
 			</div>
-			<table class="w-full border-collapse border">
-				<thead>
-					<tr class="">
-						<th class="border p-2">Model Name</th>
-						<th class="border p-2">Input Cost (USD)</th>
-						<th class="border p-2">Output Cost (USD)</th>
-						<th class="border p-2">Total Cost (USD)</th>
-					</tr>
-				</thead>
-				<tbody>
-					{#each modelData as model}
-						{@const costs = calculateModelCosts(model, inputTotalTokens, outputTotalTokens)}
-						<tr>
-							<td class="border border-gray-300 p-2">{model.name}</td>
-							<td class="border border-gray-300 p-2">{costs.inputCost.toFixed(2)}</td>
-							<td class="border border-gray-300 p-2">{costs.outputCost.toFixed(2)}</td>
-							<td class="border border-gray-300 p-2">{costs.totalCost.toFixed(2)}</td>
-						</tr>
-					{/each}
-				</tbody>
-			</table>
 		{/if}
 	</div>
-</main>
+</AppShell>
