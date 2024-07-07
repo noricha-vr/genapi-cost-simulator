@@ -7,12 +7,15 @@
 	let outputTokens = 500;
 	let iterations = 10;
 
+	let inputTotalTokens = 0;
+	let outputTotalTokens = 0;
+
 	let chart: Chart | undefined;
 	let results: any[] = [];
 	let chartCanvas: HTMLCanvasElement;
 
 	const modelData = [
-		{ name: 'GPT-3.5-turbo', inputCost: 0.0000015, outputCost: 0.000002 },
+		{ name: 'GPT-3.5-turbo', inputCost: 0.00005, outputCost: 0.00015 },
 		{ name: 'GPT-4', inputCost: 0.00003, outputCost: 0.00006 },
 		{ name: 'Claude 3 Opus', inputCost: 0.000015, outputCost: 0.000045 }
 	];
@@ -36,29 +39,28 @@
 		console.log(
 			`SystemTokens: ${systemTokens}, inputTokens: ${inputTokens}, outputTokens: ${outputTokens}, iterations: ${iterations}`
 		);
-		results = [];
 
+		results = [];
+		let lastIterationResult: any = {};
 		for (let i = 0; i < iterations; i++) {
 			const iterationResult: any = {
-				iteration: i + 1,
-				inputTokens: inputTokens,
-				outputTokens: outputTokens
+				iteration: i + 1
 			};
-
 			modelData.forEach((model) => {
-				const systemPromptCost = systemTokens * model.inputCost;
-				const inputCost = inputTokens * model.inputCost;
+				const lastTokens =
+					(lastIterationResult['inputTokens'] || 0) + (lastIterationResult['outputTokens'] || 0);
+				console.log(`Last Tokens: ${lastTokens}`);
+				const inputCost = (systemTokens + inputTokens + lastTokens) * model.inputCost;
 				const outputCost = outputTokens * model.outputCost;
-				const iterationCost = systemPromptCost + inputCost + outputCost;
-
+				const currentCost = inputCost + outputCost;
 				const previousCost = i > 0 ? results[i - 1][model.name] : 0;
-				const totalCost = iterationCost + previousCost;
+				const totalCost = currentCost + previousCost;
 
 				iterationResult[model.name] = totalCost;
-				iterationResult[`${model.name}SystemPrompt`] = systemPromptCost;
+				iterationResult[`${model.name}TotalCost`] = totalCost;
 			});
-
 			results.push(iterationResult);
+			lastIterationResult = iterationResult;
 		}
 		console.log(results);
 	}
@@ -150,17 +152,11 @@
 	<div class="mb-5">
 		{#if results.length > 0}
 			<h2 class="text-xl font-semibold mb-2">Final Results:</h2>
-			<p>System Prompt Tokens: {systemTokens}</p>
-			<p>Input Tokens per Iteration: {inputTokens}</p>
-			<p>Output Tokens per Iteration: {outputTokens}</p>
+			<p>Input Total Tokens: {inputTotalTokens}</p>
+			<p>Output Total Tokens: {outputTotalTokens}</p>
 			{#each modelData as model}
 				<p>
 					{model.name} Cumulative Cost: ${results[results.length - 1][model.name].toFixed(6)}
-				</p>
-				<p>
-					{model.name} System Prompt Cost per Iteration: ${results[0][
-						`${model.name}SystemPrompt`
-					].toFixed(6)}
 				</p>
 			{/each}
 		{/if}
