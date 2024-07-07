@@ -284,11 +284,11 @@
 				<table class="table table-hover">
 					<thead>
 						<tr>
-							<th class=""></th>
-							<th class="table-cell-fit">Model Name</th>
-							<th class="text-right">Input (USD)</th>
-							<th class="text-right">Output (USD)</th>
-							<th class="text-right">Total (USD)</th>
+							<th class="py-1"></th>
+							<th class="py-1 table-cell-fit">Model Name</th>
+							<th class="py-1 text-right">Input (USD)</th>
+							<th class="py-1 text-right">Output (USD)</th>
+							<th class="py-1 text-right">Total (USD)</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -312,5 +312,8 @@
 <style>
 	.custom-font-lg {
 		font-size: 1.125rem;
+	}
+	.table thead th {
+		padding: 0.8rem;
 	}
 </style>
