@@ -45,6 +45,14 @@
 	// 色を保持するための状態変数
 	let colors: { [key: string]: string } = {};
 
+	const currencies = [
+		{ code: 'USD', rate: 1 },
+		{ code: 'EUR', rate: 0.85 },
+		{ code: 'JPY', rate: 110 },
+		{ code: 'GBP', rate: 0.75 }
+	];
+	let selectedCurrency = currencies[0];
+
 	$: {
 		if (
 			systemTokens !== undefined &&
@@ -71,6 +79,7 @@
 
 		let cumulativeTokens = 0;
 		let previousCost = 0;
+		const conversionRate = selectedCurrency.rate;
 		for (let i = 0; i < iterations; i++) {
 			const iterationResult: any = {
 				iteration: i + 1
@@ -80,7 +89,7 @@
 				const inputCost =
 					((systemTokens + inputTokens + cumulativeTokens) * model.inputCost) / oneMillion;
 				const outputCost = (outputTokens * model.outputCost) / oneMillion;
-				const currentCost = inputCost + outputCost;
+				const currentCost = (inputCost + outputCost) * conversionRate;
 				cumulativeCost = currentCost + previousCost;
 				iterationResult[`${model.name}`] = cumulativeCost;
 			});
@@ -192,6 +201,23 @@
 		}
 	}
 
+	function formatCurrency(amount: number, currencyCode: string): string {
+		const formattedAmount = currencyCode === 'JPY' ? Math.round(amount) : amount.toFixed(2);
+
+		switch (currencyCode) {
+			case 'USD':
+				return `$${formattedAmount}`;
+			case 'EUR':
+				return `€${formattedAmount}`;
+			case 'JPY':
+				return `¥${formattedAmount}`;
+			case 'GBP':
+				return `£${formattedAmount}`;
+			default:
+				return `${currencyCode} ${formattedAmount}`;
+		}
+	}
+
 	onMount(() => {
 		// クライアントのブラウザの言語設定を取得
 		const userLanguage = navigator.language || navigator.language;
@@ -237,7 +263,7 @@
 
 <div class="container mx-auto p-4 space-y-8">
 	<div class="card p-4 variant-soft">
-		<div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+		<div class="grid grid-cols-1 md:grid-cols-5 gap-4">
 			<label class="label">
 				<span>System Tokens:</span>
 				<input type="number" bind:value={systemTokens} min="0" class="input" />
@@ -253,6 +279,14 @@
 			<label class="label">
 				<span>Iterations:</span>
 				<input type="number" bind:value={iterations} min="1" max="9999" class="input" />
+			</label>
+			<label class="label">
+				<span>Currency:</span>
+				<select bind:value={selectedCurrency} class="input">
+					{#each currencies as currency}
+						<option value={currency}>{currency.code}</option>
+					{/each}
+				</select>
 			</label>
 		</div>
 	</div>
@@ -286,20 +320,26 @@
 						<tr>
 							<th class="py-1"></th>
 							<th class="py-1 table-cell-fit">Model Name</th>
-							<th class="py-1 text-right">Input (USD)</th>
-							<th class="py-1 text-right">Output (USD)</th>
-							<th class="py-1 text-right">Total (USD)</th>
+							<th class="py-1 text-right">Input Cost</th>
+							<th class="py-1 text-right">Output Cost</th>
+							<th class="py-1 text-right">Total Cost</th>
 						</tr>
 					</thead>
 					<tbody>
 						{#each modelData as model}
 							{@const costs = calculateModelCosts(model, inputTotalTokens, outputTotalTokens)}
 							<tr class="custom-font-lg" on:click={() => toggleModelVisibility(model.name)}>
-								<td class="custom-font-lg">{model.active ? '✔' : ''}</td>
-								<td class="custom-font-lg w-1/2">{model.name}</td>
-								<td class="text-right custom-font-lg w-1/6">${costs.inputCost.toFixed(2)}</td>
-								<td class="text-right custom-font-lg w-1/6">${costs.outputCost.toFixed(2)}</td>
-								<td class="text-right custom-font-lg">${costs.totalCost.toFixed(2)}</td>
+								<td class="custom-font-lg　text-center">{model.active ? '✔' : ''}</td>
+								<td class="custom-font-lg w-1/3">{model.name}</td>
+								<td class="text-right custom-font-lg w-1/6">
+									{formatCurrency(costs.inputCost * selectedCurrency.rate, selectedCurrency.code)}
+								</td>
+								<td class="text-right custom-font-lg w-1/6">
+									{formatCurrency(costs.outputCost * selectedCurrency.rate, selectedCurrency.code)}
+								</td>
+								<td class="text-right custom-font-lg">
+									{formatCurrency(costs.totalCost * selectedCurrency.rate, selectedCurrency.code)}
+								</td>
 							</tr>
 						{/each}
 					</tbody>
