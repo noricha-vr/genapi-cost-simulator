@@ -140,8 +140,7 @@
 </script>
 
 <main class="max-w-3xl mx-auto p-5 font-sans">
-	<h1 class="text-2xl font-bold mb-4">AI Cost Calculator</h1>
-
+	<h1 class="text-2xl font-bold mb-4">Generative AI API Cost Simulator</h1>
 	<div class="grid gap-4 mb-5 text-gray-400">
 		<label class="flex justify-between items-center">
 			System Tokens:
