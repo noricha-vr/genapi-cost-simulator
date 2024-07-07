@@ -157,7 +157,6 @@
 				fill="currentColor"
 				viewBox="0 0 20 20"
 				xmlns="http://www.w3.org/2000/svg"
-				alt="AI Cost Simulator Logo"
 			>
 				<path d="M13 7H7v6h6V7z" />
 				<path
@@ -196,9 +195,13 @@
 		</div>
 	</div>
 
-	<div class="card p-4 variant-soft">
+	<div class="card p-4 variant-soft w-full">
 		<div class="w-full h-96">
-			<canvas bind:this={chartCanvas} class="w-full h-full"></canvas>
+			<canvas
+				bind:this={chartCanvas}
+				class="w-full h-full"
+				style="width: 100% !important; height: 100% !important;"
+			></canvas>
 		</div>
 	</div>
 
