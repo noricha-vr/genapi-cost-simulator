@@ -141,7 +141,7 @@
 
 <main class="max-w-3xl mx-auto p-5 font-sans">
 	<h1 class="text-2xl font-bold mb-4">Generative AI API Cost Simulator</h1>
-	<div class="grid gap-4 mb-5 text-gray-400">
+	<div class="grid gap-4 mb-5">
 		<label class="flex justify-between items-center">
 			System Tokens:
 			<input type="number" bind:value={systemTokens} min="0" class="w-24 p-1 border rounded" />
@@ -167,7 +167,7 @@
 	<div class="mb-5">
 		{#if results.length > 0}
 			<h2 class="text-xl font-semibold">Final Results</h2>
-			<div class="flex mb-2 text-gray-200">
+			<div class="flex mb-2">
 				<div class="mr-2">
 					<span class="text-sm">Total Input Tokens:</span>
 					<span class="text-base font-medium">{inputTotalTokens.toLocaleString()}</span>
@@ -177,13 +177,13 @@
 					<span class="text-base font-medium">{outputTotalTokens.toLocaleString()}</span>
 				</div>
 			</div>
-			<table class="w-full border-collapse border border-gray-3000">
+			<table class="w-full border-collapse border">
 				<thead>
 					<tr class="">
-						<th class="border border-gray-300 p-2">Model Name</th>
-						<th class="border border-gray-300 p-2">Input Cost (USD)</th>
-						<th class="border border-gray-300 p-2">Output Cost (USD)</th>
-						<th class="border border-gray-300 p-2">Total Cost (USD)</th>
+						<th class="border p-2">Model Name</th>
+						<th class="border p-2">Input Cost (USD)</th>
+						<th class="border p-2">Output Cost (USD)</th>
+						<th class="border p-2">Total Cost (USD)</th>
 					</tr>
 				</thead>
 				<tbody>
