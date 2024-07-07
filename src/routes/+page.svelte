@@ -157,6 +157,7 @@
 				fill="currentColor"
 				viewBox="0 0 20 20"
 				xmlns="http://www.w3.org/2000/svg"
+				alt="AI Cost Simulator Logo"
 			>
 				<path d="M13 7H7v6h6V7z" />
 				<path
@@ -166,10 +167,8 @@
 				/>
 			</svg>
 			<div>
-				<h1 class="text-4xl font-extrabold tracking-tight">
-					<span class="block">AI Cost Calculator</span>
-					<span class="block text-yellow-300 text-2xl mt-1">Generative AI API Cost Simulation</span>
-				</h1>
+				<h1 class="text-4xl font-extrabold tracking-tight">AI Cost Simulator</h1>
+				<h2 class="block text-yellow-300 text-2xl mt-1">Generative AI API Cost Simulation</h2>
 			</div>
 		</div>
 	</div>
