@@ -14,6 +14,8 @@
 	let results: any[] = [];
 	let chartCanvas: HTMLCanvasElement;
 
+	const oneMillion = 1000000;
+
 	let tokenConvertRate = 4.0;
 	const modelData = [
 		// 費用は100万トークンあたりのUSD価格
@@ -74,8 +76,8 @@
 			let cumulativeCost = 0;
 			modelData.forEach((model) => {
 				const inputCost =
-					((systemTokens + inputTokens + cumulativeTokens) * model.inputCost) / 1000000;
-				const outputCost = (outputTokens * model.outputCost) / 1000000;
+					((systemTokens + inputTokens + cumulativeTokens) * model.inputCost) / oneMillion;
+				const outputCost = (outputTokens * model.outputCost) / oneMillion;
 				const currentCost = inputCost + outputCost;
 				cumulativeCost = currentCost + previousCost;
 				iterationResult[`${model.name}`] = cumulativeCost;
@@ -99,8 +101,6 @@
 			console.error('Failed to get 2D context from canvas');
 			return;
 		}
-
-		const isFirstIteration = results[0]?.iteration === 1;
 
 		const datasets = modelData.map((model) => ({
 			label: model.name,
@@ -146,8 +146,8 @@
 	}
 
 	function calculateModelCosts(model: any, inputTokens: number, outputTokens: number) {
-		const inputCost = (inputTokens * model.inputCost) / 1000000;
-		const outputCost = (outputTokens * model.outputCost) / 1000000;
+		const inputCost = (inputTokens * model.inputCost) / oneMillion;
+		const outputCost = (outputTokens * model.outputCost) / oneMillion;
 		const totalCost = inputCost + outputCost;
 		return { inputCost, outputCost, totalCost };
 	}
@@ -208,13 +208,9 @@
 		</div>
 	</div>
 
-	<div class="card p-4 variant-soft w-full">
-		<div class="w-full h-96 md:h-128">
-			<canvas
-				bind:this={chartCanvas}
-				class="w-full h-full"
-				style="width: 100% !important; height: 100% !important;"
-			></canvas>
+	<div class="card p-4 variant-soft">
+		<div class="w-full h-96 md:h-128 flex justify-center items-center">
+			<canvas bind:this={chartCanvas}></canvas>
 		</div>
 	</div>
 
