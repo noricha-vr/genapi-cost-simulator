@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import Chart from 'chart.js/auto';
-	import { AppShell, AppBar, Avatar } from '@skeletonlabs/skeleton';
 
 	let systemTokens = 500;
 	let inputTokens = 100;
@@ -235,10 +234,7 @@
 </div>
 
 <style>
-	.custom-font-base {
-		font-size: 1rem !important;
-	}
 	.custom-font-lg {
-		font-size: 1.125rem !important;
+		font-size: 1.125rem;
 	}
 </style>
