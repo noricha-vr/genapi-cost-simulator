@@ -15,8 +15,8 @@
 	let chartCanvas: HTMLCanvasElement;
 
 	const oneMillion = 1000000;
-
 	let tokenConvertRate = 4.0;
+
 	let modelData = [
 		// 費用は100万トークンあたりのUSD価格
 		// OpenAI
@@ -30,8 +30,8 @@
 		// Google
 		{
 			name: 'gemini-1.5-pro',
-			inputCost: 0.000001 * tokenConvertRate,
-			outputCost: 0.000001 * tokenConvertRate,
+			inputCost: 3.75 * tokenConvertRate,
+			outputCost: 7.5 * tokenConvertRate,
 			active: true
 		},
 		{
@@ -176,6 +176,15 @@
 	}
 
 	onMount(() => {
+		// クライアントのブラウザの言語設定を取得
+		const userLanguage = navigator.language || navigator.language;
+
+		// 日本語設定のブラウザの場合、tokenConvertRateを1.3に設定
+		if (userLanguage.startsWith('ja')) {
+			tokenConvertRate = 1.3;
+		}
+		console.log(`User Language: ${userLanguage}, Token Convert Rate: ${tokenConvertRate}`);
+
 		// 初回読み込み時に色を生成し、状態変数に保存
 		modelData.forEach((model) => {
 			colors[model.name] = getRandomColor();
