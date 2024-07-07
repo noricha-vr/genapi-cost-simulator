@@ -199,11 +199,15 @@
 			<div class="flex flex-wrap gap-4 mb-4">
 				<div>
 					<span class="font-bold">Total Input Tokens:</span>
-					<span>{inputTotalTokens.toLocaleString()}</span>
+					<span class="text-2xl font-semibold text-primary-500"
+						>{inputTotalTokens.toLocaleString()}</span
+					>
 				</div>
 				<div>
 					<span class="font-bold">Total Output Tokens:</span>
-					<span>{outputTotalTokens.toLocaleString()}</span>
+					<span class="text-2xl font-semibold text-primary-500"
+						>{outputTotalTokens.toLocaleString()}</span
+					>
 				</div>
 			</div>
 			<div class="table-container">
