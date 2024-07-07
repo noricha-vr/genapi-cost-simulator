@@ -26,6 +26,9 @@
 		{ name: 'claude-3-haiku-20240307', inputCost: 0.25, outputCost: 1.25 }
 	];
 
+	// 色を保持するための状態変数
+	let colors: { [key: string]: string } = {};
+
 	$: {
 		if (
 			systemTokens !== undefined &&
@@ -90,13 +93,13 @@
 		const datasets = modelData.map((model) => ({
 			label: model.name,
 			data: results.map((result) => result[model.name]),
-			borderColor: getRandomColor(),
-			backgroundColor: getRandomColor(),
+			borderColor: colors[model.name],
+			backgroundColor: colors[model.name],
 			fill: false
 		}));
 
 		chart = new Chart(ctx, {
-			type: isFirstIteration ? 'bar' : 'line',
+			type: 'line', // グラフのタイプを 'line' に変更
 			data: {
 				labels: results.map((result) => result.iteration),
 				datasets: datasets
@@ -138,6 +141,10 @@
 	}
 
 	onMount(() => {
+		// 初回読み込み時に色を生成し、状態変数に保存
+		modelData.forEach((model) => {
+			colors[model.name] = getRandomColor();
+		});
 		calculateAICosts();
 	});
 </script>
