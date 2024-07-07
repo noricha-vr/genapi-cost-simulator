@@ -3,7 +3,7 @@
 	import Chart from 'chart.js/auto';
 
 	let systemTokens = 500;
-	let inputTokens = 1000;
+	let inputTokens = 100;
 	let outputTokens = 500;
 	let iterations = 10;
 
@@ -15,9 +15,15 @@
 	let chartCanvas: HTMLCanvasElement;
 
 	const modelData = [
-		{ name: 'GPT-3.5-turbo', inputCost: 0.00005, outputCost: 0.00015 },
-		{ name: 'GPT-4', inputCost: 0.00003, outputCost: 0.00006 },
-		{ name: 'Claude 3 Opus', inputCost: 0.000015, outputCost: 0.000045 }
+		// 費用は100万トークンあたりのUSD価格
+		// OpenAI
+		{ name: 'gpt-4o-2024-05-13', inputCost: 5.0, outputCost: 15.0 },
+		{ name: 'gpt-3.5-turbo-0125', inputCost: 0.5, outputCost: 1.5 },
+		{ name: 'gpt-3.5-turbo(fine-tuning)', inputCost: 3.0, outputCost: 6.0 },
+		// Anthropic
+		{ name: 'claude-3-opus-20240229', inputCost: 15.0, outputCost: 75.0 },
+		{ name: 'claude-3-5-sonnet-20240620', inputCost: 3.0, outputCost: 15.0 },
+		{ name: 'claude-3-haiku-20240307', inputCost: 0.25, outputCost: 1.25 }
 	];
 
 	$: {
@@ -47,16 +53,20 @@
 			const iterationResult: any = {
 				iteration: i + 1
 			};
+			let cumulativeCost = 0;
 			modelData.forEach((model) => {
-				const inputCost = (systemTokens + inputTokens + cumulativeTokens) * model.inputCost;
-				const outputCost = outputTokens * model.outputCost;
+				const inputCost =
+					((systemTokens + inputTokens + cumulativeTokens) * model.inputCost) / 1000 / 1000;
+				const outputCost = (outputTokens * model.outputCost) / 1000 / 1000;
 				const currentCost = inputCost + outputCost;
-				const cumulativeCost = currentCost + previousCost;
-				previousCost = cumulativeCost;
+				cumulativeCost = currentCost + previousCost;
 				iterationResult[`${model.name}`] = cumulativeCost;
 			});
 			results.push(iterationResult);
 			cumulativeTokens += inputTokens + outputTokens;
+			previousCost = cumulativeCost;
+			inputTotalTokens += systemTokens + inputTokens + cumulativeTokens;
+			outputTotalTokens += outputTokens;
 		}
 		console.log(results);
 	}
@@ -124,7 +134,7 @@
 
 	<div class="grid gap-4 mb-5 text-gray-400">
 		<label class="flex justify-between items-center">
-			Initial Tokens:
+			System Tokens:
 			<input type="number" bind:value={systemTokens} min="0" class="w-24 p-1 border rounded" />
 		</label>
 		<label class="flex justify-between items-center">
@@ -148,8 +158,8 @@
 	<div class="mb-5">
 		{#if results.length > 0}
 			<h2 class="text-xl font-semibold mb-2">Final Results:</h2>
-			<p>Input Total Tokens: {inputTotalTokens}</p>
-			<p>Output Total Tokens: {outputTotalTokens}</p>
+			<p>Input Total Tokens: {inputTotalTokens} ({inputTotalTokens / 1000000}M)</p>
+			<p>Output Total Tokens: {outputTotalTokens} ({outputTotalTokens / 1000000}M)</p>
 			{#each modelData as model}
 				<p>
 					{model.name} Cumulative Cost: ${results[results.length - 1][`${model.name}`].toFixed(2)}
