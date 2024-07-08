@@ -185,6 +185,10 @@
 		return '#' + Math.floor(Math.random() * 16777215).toString(16);
 	}
 
+	function setTokenConvertRate(rate: number) {
+		tokenConvertRate = rate;
+	}
+
 	function calculateModelCosts(model: any, inputTokens: number, outputTokens: number) {
 		const inputCost = (inputTokens * model.inputCost) / oneMillion;
 		const outputCost = (outputTokens * model.outputCost) / oneMillion;
@@ -224,7 +228,7 @@
 
 		// 日本語設定のブラウザの場合、tokenConvertRateを1.3に設定
 		if (userLanguage.startsWith('ja')) {
-			tokenConvertRate = 1.3;
+			tokenConvertRate = 1;
 		}
 		console.log(`User Language: ${userLanguage}, Token Convert Rate: ${tokenConvertRate}`);
 
@@ -258,6 +262,11 @@
 				<h2 class="block text-yellow-300 text-2xl mt-1">Generative AI API Cost Simulation</h2>
 			</div>
 		</div>
+		<div class="flex items-center space-x-4">
+			<span>Select Token Convert Rate: {tokenConvertRate}</span>
+			<button on:click={() => setTokenConvertRate(1.3)}>Japanese</button>
+			<button on:click={() => setTokenConvertRate(1)}>USD</button>
+		</div>
 	</div>
 </header>
 
@@ -288,6 +297,16 @@
 					{/each}
 				</select>
 			</label>
+		</div>
+		<div class="mt-3">
+			Verify token count using:
+			<a href="https://platform.openai.com/tokenizer" class="anchor" target="_blank"
+				>OpenAI Tokenizer</a
+			>
+			or
+			<a href="https://lunary.ai/anthropic-tokenizer" class="anchor" target="_blank"
+				>Anthropic Tokenizer</a
+			>
 		</div>
 	</div>
 
