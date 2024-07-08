@@ -1,19 +1,4 @@
 import { describe, it, expect } from 'vitest';
-import { render, screen } from '@testing-library/svelte';
-
-
-// function stepsSummary(steps: any[]): {
-//     totalInputTokens: number;
-//     totalOutputTokens: number;
-// } {
-//     let totalInputTokens = 0;
-//     let totalOutputTokens = 0;
-//     steps.forEach((step) => {
-//         totalInputTokens += step.totalInputTokens;
-//         totalOutputTokens += step.totalOutputTokens;
-//     });
-//     return { totalInputTokens, totalOutputTokens };
-// }
 
 function calculateTokens(systemTokens: number, inputTokens: number, outputTokens: number, iteration: number): {
     totalInputTokens: number;
