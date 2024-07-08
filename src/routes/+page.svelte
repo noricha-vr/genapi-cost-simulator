@@ -115,10 +115,12 @@
 			});
 			results.push(iterationResult);
 			previousCost = cumulativeCost;
-			totalInputTokens += systemTokens + inputTokens + cumulativeTokens;
+			totalInputTokens += inputTokens + cumulativeTokens;
 			cumulativeTokens += inputTokens + outputTokens;
 			totalOutputTokens += outputTokens;
 		}
+		// システムトークンは一度だけ加算
+		totalInputTokens += systemTokens;
 		console.log(results);
 	}
 
