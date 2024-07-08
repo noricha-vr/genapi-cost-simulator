@@ -15,9 +15,25 @@
 	let chartCanvas: HTMLCanvasElement;
 
 	const oneMillion = 1000000;
-	let tokenConvertRate = 4.0;
 
-	let modelData = [
+	const currencies = [
+		{ code: 'USD', rate: 1 },
+		{ code: 'EUR', rate: 0.92 },
+		{ code: 'JPY', rate: 160 },
+		{ code: 'GBP', rate: 0.77 }
+	];
+	let selectedCurrency = currencies[0];
+	let tokenConvertRate = 0.25;
+
+	type ModelData = {
+		name: string;
+		inputCost: number;
+		outputCost: number;
+		active: boolean;
+		inputTextCost?: number;
+		outputTextCost?: number;
+	};
+	let modelData: ModelData[] = [
 		// 費用は100万トークンあたりのUSD価格
 		// OpenAI
 		{ name: 'gpt-4o', inputCost: 5.0, outputCost: 15.0, active: true },
@@ -30,28 +46,24 @@
 		// Google
 		{
 			name: 'gemini-1.5-pro',
-			inputCost: 3.75 * tokenConvertRate,
-			outputCost: 7.5 * tokenConvertRate,
+			inputCost: 0,
+			outputCost: 0,
+			inputTextCost: 3.75,
+			outputTextCost: 7.5,
 			active: true
 		},
 		{
 			name: 'gemini-1.5-flash',
-			inputCost: 0.375 * tokenConvertRate,
-			outputCost: 0.75 * tokenConvertRate,
+			inputCost: 0,
+			outputCost: 0,
+			inputTextCost: 0.375,
+			outputTextCost: 0.75,
 			active: true
 		}
 	];
 
 	// 色を保持するための状態変数
 	let colors: { [key: string]: string } = {};
-
-	const currencies = [
-		{ code: 'USD', rate: 1 },
-		{ code: 'EUR', rate: 0.85 },
-		{ code: 'JPY', rate: 110 },
-		{ code: 'GBP', rate: 0.75 }
-	];
-	let selectedCurrency = currencies[0];
 
 	$: {
 		if (
@@ -68,6 +80,14 @@
 		updateChart();
 	}
 
+	function updateModelCostsWithTokenConversion() {
+		modelData.forEach((model) => {
+			if (model.inputTextCost !== undefined && model.outputTextCost !== undefined) {
+				model.inputCost = model.inputTextCost * tokenConvertRate;
+				model.outputCost = model.outputTextCost * tokenConvertRate;
+			}
+		});
+	}
 	function calculateAICosts() {
 		console.log(
 			`SystemTokens: ${systemTokens}, inputTokens: ${inputTokens}, outputTokens: ${outputTokens}, iterations: ${iterations}`
@@ -187,6 +207,10 @@
 
 	function setTokenConvertRate(rate: number) {
 		tokenConvertRate = rate;
+		console.log(`Token Convert Rate: ${tokenConvertRate}`);
+		// update model data
+		updateModelCostsWithTokenConversion();
+		calculateAICosts();
 	}
 
 	function calculateModelCosts(model: any, inputTokens: number, outputTokens: number) {
@@ -226,12 +250,12 @@
 		// クライアントのブラウザの言語設定を取得
 		const userLanguage = navigator.language || navigator.language;
 
-		// 日本語設定のブラウザの場合、tokenConvertRateを1.3に設定
+		// 日本語設定のブラウザの場合、tokenConvertRateを1に設定
 		if (userLanguage.startsWith('ja')) {
-			tokenConvertRate = 1;
+			tokenConvertRate = 4;
 		}
 		console.log(`User Language: ${userLanguage}, Token Convert Rate: ${tokenConvertRate}`);
-
+		updateModelCostsWithTokenConversion();
 		// 初回読み込み時に色を生成し、状態変数に保存
 		modelData.forEach((model) => {
 			colors[model.name] = getRandomColor();
@@ -261,11 +285,6 @@
 				<h1 class="text-4xl font-extrabold tracking-tight">AI Cost Simulator</h1>
 				<h2 class="block text-yellow-300 text-2xl mt-1">Generative AI API Cost Simulation</h2>
 			</div>
-		</div>
-		<div class="flex items-center space-x-4">
-			<span>Select Token Convert Rate: {tokenConvertRate}</span>
-			<button on:click={() => setTokenConvertRate(1.3)}>Japanese</button>
-			<button on:click={() => setTokenConvertRate(1)}>USD</button>
 		</div>
 	</div>
 </header>
@@ -306,6 +325,15 @@
 			or
 			<a href="https://lunary.ai/anthropic-tokenizer" class="anchor" target="_blank"
 				>Anthropic Tokenizer</a
+			>
+		</div>
+		<div class="flex items-center space-x-4">
+			<span>Select Token Convert Rate: {tokenConvertRate}</span>
+			<button class="btn btn-sm variant-filled" on:click={() => setTokenConvertRate(4)}
+				>Alphabet languages</button
+			>
+			<button class="btn btn-sm variant-outline" on:click={() => setTokenConvertRate(1)}
+				>Chinese Japanese Hangul</button
 			>
 		</div>
 	</div>
