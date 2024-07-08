@@ -1,14 +1,61 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/svelte';
 
-function calculateAPICosts(systemTokens: number, inputTokens: number, outputTokens: number, selectedCurrency: any, iteration: number) {
-    return 100;
+
+// function stepsSummary(steps: any[]): {
+//     totalInputTokens: number;
+//     totalOutputTokens: number;
+// } {
+//     let totalInputTokens = 0;
+//     let totalOutputTokens = 0;
+//     steps.forEach((step) => {
+//         totalInputTokens += step.totalInputTokens;
+//         totalOutputTokens += step.totalOutputTokens;
+//     });
+//     return { totalInputTokens, totalOutputTokens };
+// }
+
+function calculateTokens(systemTokens: number, inputTokens: number, outputTokens: number, iteration: number): {
+    totalInputTokens: number;
+    totalOutputTokens: number;
+} {
+    let totalInputTokens = 0;
+    for (let i = 0; i < iteration; i++) {
+        const currentTokens = inputTokens * (i + 1) + outputTokens * i;
+        totalInputTokens += currentTokens
+    }
+    totalInputTokens += systemTokens;
+    const totalOutputTokens = outputTokens * iteration;
+    return { totalInputTokens, totalOutputTokens };
 }
 
-describe('calculateAPICosts', () => {
+describe('calculateTokens', () => {
+    // 100 input tokens, 100 output tokens, 100 system tokens, 1 iteration
+    const stepTokens = calculateTokens(100, 100, 100, 1);
+    console.log(stepTokens);
+    it('should return 200', () => {
+        expect(stepTokens.totalInputTokens).toBe(200);
+    });
+
     it('should return 100', () => {
-        const result = calculateAPICosts(100, 100, 100, { rate: 1 }, 1);
-        expect(result).toBe(100);
-        console.log(result);
+        expect(stepTokens.totalOutputTokens).toBe(100);
+    });
+    // 100 input tokens, 100 output tokens, 100 system tokens, 2 iterations
+    const stepTokens2 = calculateTokens(100, 100, 100, 2);
+    console.log(stepTokens2);
+    it('should return 300', () => {
+        expect(stepTokens2.totalInputTokens).toBe(500);
+    });
+    it('should return 200', () => {
+        expect(stepTokens2.totalOutputTokens).toBe(200);
+    });
+    // 100 input tokens, 100 output tokens, 100 system tokens, 3 iterations
+    const stepTokens3 = calculateTokens(100, 100, 100, 3);
+    console.log(stepTokens3);
+    it('should return 400', () => {
+        expect(stepTokens3.totalInputTokens).toBe(1000);
+    });
+    it('should return 300', () => {
+        expect(stepTokens3.totalOutputTokens).toBe(300);
     });
 });
