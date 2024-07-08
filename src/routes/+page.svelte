@@ -345,6 +345,23 @@
 					</tbody>
 				</table>
 			</div>
+			<div class="mt-3">* You can select the model you want to see the cost.</div>
+			<div class="mt-3">
+				<h3>Pricing source</h3>
+				<p>
+					Pricing is based on the following source:
+					<a href="https://openai.com/api/pricing/" class="anchor" target="_blank">OpenAI Pricing</a
+					>
+					<a href="https://www.anthropic.com/pricing#anthropic-api" class="anchor" target="_blank"
+						>Claude Pricing</a
+					>
+					<a
+						href="https://cloud.google.com/vertex-ai/generative-ai/pricing"
+						class="anchor"
+						target="_blank">Gemini Pricing</a
+					>
+				</p>
+			</div>
 		</div>
 	{/if}
 </div>
