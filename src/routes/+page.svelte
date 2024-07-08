@@ -7,8 +7,8 @@
 	let outputTokens = 500;
 	let iterations = 10;
 
-	let inputTotalTokens = 0;
-	let outputTotalTokens = 0;
+	let totalInputTokens = 0;
+	let totalOutputTokens = 0;
 
 	let chart: Chart | undefined;
 	let results: any[] = [];
@@ -94,8 +94,8 @@
 		);
 
 		results = [];
-		inputTotalTokens = 0;
-		outputTotalTokens = 0;
+		totalInputTokens = 0;
+		totalOutputTokens = 0;
 
 		let cumulativeTokens = 0;
 		let previousCost = 0;
@@ -115,9 +115,9 @@
 			});
 			results.push(iterationResult);
 			previousCost = cumulativeCost;
-			inputTotalTokens += systemTokens + inputTokens + cumulativeTokens;
+			totalInputTokens += systemTokens + inputTokens + cumulativeTokens;
 			cumulativeTokens += inputTokens + outputTokens;
-			outputTotalTokens += outputTokens;
+			totalOutputTokens += outputTokens;
 		}
 		console.log(results);
 	}
@@ -351,13 +351,13 @@
 				<div>
 					<span class="font-bold">Total Input Tokens:</span>
 					<span class="text-2xl font-semibold text-primary-500"
-						>{inputTotalTokens.toLocaleString()}</span
+						>{totalInputTokens.toLocaleString()}</span
 					>
 				</div>
 				<div>
 					<span class="font-bold">Total Output Tokens:</span>
 					<span class="text-2xl font-semibold text-primary-500"
-						>{outputTotalTokens.toLocaleString()}</span
+						>{totalOutputTokens.toLocaleString()}</span
 					>
 				</div>
 			</div>
@@ -374,7 +374,7 @@
 					</thead>
 					<tbody>
 						{#each modelData as model}
-							{@const costs = calculateModelCosts(model, inputTotalTokens, outputTotalTokens)}
+							{@const costs = calculateModelCosts(model, totalInputTokens, totalOutputTokens)}
 							<tr class="custom-font-lg" on:click={() => toggleModelVisibility(model.name)}>
 								<td class="custom-font-lg　text-center">{model.active ? '✔' : ''}</td>
 								<td class="custom-font-lg w-1/3">{model.name}</td>
