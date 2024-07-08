@@ -114,9 +114,9 @@
 				iterationResult[`${model.name}`] = cumulativeCost;
 			});
 			results.push(iterationResult);
-			cumulativeTokens += inputTokens + outputTokens;
 			previousCost = cumulativeCost;
 			inputTotalTokens += systemTokens + inputTokens + cumulativeTokens;
+			cumulativeTokens += inputTokens + outputTokens;
 			outputTotalTokens += outputTokens;
 		}
 		console.log(results);
