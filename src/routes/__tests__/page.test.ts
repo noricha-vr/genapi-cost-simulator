@@ -1,6 +1,11 @@
 import { describe, it, expect } from 'vitest';
 
-function calculateTokens(systemTokens: number, inputTokens: number, outputTokens: number, iteration: number): {
+function calculateTokens(
+    systemTokens: number,
+    inputTokens: number,
+    outputTokens: number,
+    iteration: number
+): {
     totalInputTokens: number;
     totalOutputTokens: number;
 } {
