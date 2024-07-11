@@ -3,7 +3,7 @@
 	import Chart from 'chart.js/auto';
 	import { modelStore } from '$lib/models';
 	import type { ModelData } from '$lib/types';
-	import { calculateTokens } from '$lib/index';
+	import { calculateTokens, formatCurrency } from '$lib/index';
 	let systemTokens = 500;
 	let inputTokens = 100;
 	let outputTokens = 500;
@@ -52,7 +52,8 @@
 			systemTokens !== undefined &&
 			inputTokens !== undefined &&
 			outputTokens !== undefined &&
-			iterations !== undefined
+			iterations !== undefined &&
+			selectedCurrency !== undefined
 		) {
 			const { results, totalInputTokens, totalOutputTokens } = calculateAPICosts(
 				systemTokens,
@@ -109,6 +110,8 @@
 	}
 
 	function updateChart() {
+		console.log('updateChart');
+
 		if (chart) {
 			chart.destroy();
 		}
@@ -204,23 +207,6 @@
 			modelData[modelIndex] = { ...modelData[modelIndex], active: !modelData[modelIndex].active };
 			modelData = [...modelData]; // Trigger reactivity
 			updateChart();
-		}
-	}
-
-	function formatCurrency(amount: number, currencyCode: string): string {
-		const formattedAmount = currencyCode === 'JPY' ? Math.round(amount) : amount.toFixed(2);
-
-		switch (currencyCode) {
-			case 'USD':
-				return `$${formattedAmount}`;
-			case 'EUR':
-				return `€${formattedAmount}`;
-			case 'JPY':
-				return `¥${formattedAmount}`;
-			case 'GBP':
-				return `£${formattedAmount}`;
-			default:
-				return `${currencyCode} ${formattedAmount}`;
 		}
 	}
 
