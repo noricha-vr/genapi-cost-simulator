@@ -1,5 +1,4 @@
-export { currencyStore } from './stores/currencyStore';
-
+export { currencyStore } from '$lib/stores/currencyStore';
 export function calculateTokens(
     systemTokens: number,
     inputTokens: number,

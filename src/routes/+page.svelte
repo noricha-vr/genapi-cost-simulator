@@ -108,7 +108,7 @@
 		return { results, totalInputTokens, totalOutputTokens };
 	}
 
-	function updateChart(IterationResults: ResultType[], selectedCurrency: Currency) {
+	function updateChart(results: any[], selectedCurrency: Currency) {
 		console.log('updateChart');
 
 		if (chart) {
@@ -225,7 +225,6 @@
 				fill="currentColor"
 				viewBox="0 0 20 20"
 				xmlns="http://www.w3.org/2000/svg"
-				alt="AI Cost Simulator Logo"
 			>
 				<path d="M13 7H7v6h6V7z" />
 				<path
