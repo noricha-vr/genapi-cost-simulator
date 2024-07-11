@@ -19,10 +19,10 @@
 	const oneMillion = 1000000;
 
 	const currencies = [
-		{ code: 'USD', rate: 1 },
-		{ code: 'EUR', rate: 0.92 },
-		{ code: 'JPY', rate: 160 },
-		{ code: 'GBP', rate: 0.77 }
+		{ code: 'USD', rate: 1, symbol: '$' },
+		{ code: 'EUR', rate: 0.92, symbol: '€' },
+		{ code: 'JPY', rate: 160, symbol: '¥' },
+		{ code: 'GBP', rate: 0.77, symbol: '£' }
 	];
 	let selectedCurrency = currencies[0];
 
@@ -155,14 +155,14 @@
 					y: {
 						title: {
 							display: true,
-							text: 'Cumulative Cost ($)',
+							text: `Cumulative Cost (${selectedCurrency.symbol})`,
 							font: {
 								size: 14 // フォントサイズを大きくする
 							}
 						},
 						ticks: {
 							callback: function (value: number | string) {
-								return '$' + Number(value).toFixed(2);
+								return selectedCurrency.symbol + Number(value).toFixed(2);
 							},
 							font: {
 								size: 14 // 軸のラベルのフォントサイズを大きくする
