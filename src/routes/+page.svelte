@@ -52,8 +52,7 @@
 			systemTokens !== undefined &&
 			inputTokens !== undefined &&
 			outputTokens !== undefined &&
-			iterations !== undefined &&
-			selectedCurrency !== undefined
+			iterations !== undefined
 		) {
 			const { results, totalInputTokens, totalOutputTokens } = calculateAPICosts(
 				systemTokens,
@@ -64,8 +63,8 @@
 		}
 	}
 
-	$: if (results.length > 0 && chartCanvas) {
-		updateChart();
+	$: if (selectedCurrency !== undefined && results.length > 0 && chartCanvas) {
+		updateChart(results, selectedCurrency);
 	}
 
 	function calculateAPICosts(
@@ -109,7 +108,7 @@
 		return { results, totalInputTokens, totalOutputTokens };
 	}
 
-	function updateChart() {
+	function updateChart(IterationResults: ResultType[], selectedCurrency: Currency) {
 		console.log('updateChart');
 
 		if (chart) {
@@ -206,7 +205,7 @@
 		if (modelIndex !== -1) {
 			modelData[modelIndex] = { ...modelData[modelIndex], active: !modelData[modelIndex].active };
 			modelData = [...modelData]; // Trigger reactivity
-			updateChart();
+			updateChart(results, selectedCurrency);
 		}
 	}
 
