@@ -1,6 +1,7 @@
+import { writable } from 'svelte/store';
 import type { ModelData } from '$lib/types';
 
-export let modelData: ModelData[] = [
+const initialModelData: ModelData[] = [
     // 費用は100万トークンあたりのUSD価格
     // OpenAI
     { name: 'gpt-4o', inputCost: 5.0, outputCost: 15.0, active: true },
@@ -24,3 +25,5 @@ export let modelData: ModelData[] = [
         active: true
     }
 ];
+
+export const modelStore = writable(initialModelData);

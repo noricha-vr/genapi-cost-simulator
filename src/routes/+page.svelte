@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import Chart from 'chart.js/auto';
-	import { modelData } from '$lib/models';
+	import { modelStore } from '$lib/models';
+	import type { ModelData } from '$lib/types';
 
 	let systemTokens = 500;
 	let inputTokens = 100;
@@ -27,6 +28,19 @@
 
 	// 色を保持するための状態変数
 	let colors: { [key: string]: string } = {};
+
+	// modelStoreを購読
+	let modelData: ModelData[];
+	const unsubscribe = modelStore.subscribe((value) => {
+		modelData = value;
+	});
+
+	// コンポーネントのアンマウント時にunsubscribe
+	onMount(() => {
+		return () => {
+			unsubscribe();
+		};
+	});
 
 	$: {
 		if (
