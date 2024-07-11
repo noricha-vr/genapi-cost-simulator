@@ -4,6 +4,7 @@
 	import { modelStore } from '$lib/models';
 	import type { ModelData, Currency } from '$lib/types';
 	import { calculateTokens, formatCurrency } from '$lib/index';
+	import CostChart from '$lib/components/CostChart.svelte';
 	let systemTokens = 500;
 	let inputTokens = 100;
 	let outputTokens = 500;
@@ -282,9 +283,7 @@
 	</div>
 
 	<div class="card p-4 variant-soft">
-		<div class="w-full h-96 md:h-128 flex justify-center items-center">
-			<canvas bind:this={chartCanvas}></canvas>
-		</div>
+		<CostChart {results} {selectedCurrency} {modelData} />
 	</div>
 
 	{#if results.length > 0}
