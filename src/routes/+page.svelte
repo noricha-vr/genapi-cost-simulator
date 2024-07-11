@@ -23,7 +23,6 @@
 		{ code: 'GBP', rate: 0.77 }
 	];
 	let selectedCurrency = currencies[0];
-	let tokenConvertRate = 0.25;
 
 	type ModelData = {
 		name: string;
@@ -46,18 +45,14 @@
 		// Google
 		{
 			name: 'gemini-1.5-pro',
-			inputCost: 0,
-			outputCost: 0,
-			inputTextCost: 3.75,
-			outputTextCost: 7.5,
+			inputCost: 3.5,
+			outputCost: 7.0,
 			active: true
 		},
 		{
 			name: 'gemini-1.5-flash',
-			inputCost: 0,
-			outputCost: 0,
-			inputTextCost: 0.375,
-			outputTextCost: 0.75,
+			inputCost: 0.35,
+			outputCost: 0.7,
 			active: true
 		}
 	];
@@ -80,14 +75,6 @@
 		updateChart();
 	}
 
-	function updateModelCostsWithTokenConversion() {
-		modelData.forEach((model) => {
-			if (model.inputTextCost !== undefined && model.outputTextCost !== undefined) {
-				model.inputCost = model.inputTextCost * tokenConvertRate;
-				model.outputCost = model.outputTextCost * tokenConvertRate;
-			}
-		});
-	}
 	function calculateAICosts() {
 		console.log(
 			`SystemTokens: ${systemTokens}, inputTokens: ${inputTokens}, outputTokens: ${outputTokens}, iterations: ${iterations}`
@@ -207,14 +194,6 @@
 		return '#' + Math.floor(Math.random() * 16777215).toString(16);
 	}
 
-	function setTokenConvertRate(rate: number) {
-		tokenConvertRate = rate;
-		console.log(`Token Convert Rate: ${tokenConvertRate}`);
-		// update model data
-		updateModelCostsWithTokenConversion();
-		calculateAICosts();
-	}
-
 	function calculateModelCosts(model: any, inputTokens: number, outputTokens: number) {
 		const inputCost = (inputTokens * model.inputCost) / oneMillion;
 		const outputCost = (outputTokens * model.outputCost) / oneMillion;
@@ -251,13 +230,6 @@
 	onMount(() => {
 		// クライアントのブラウザの言語設定を取得
 		const userLanguage = navigator.language || navigator.language;
-
-		// 日本語設定のブラウザの場合、tokenConvertRateを1に設定
-		if (userLanguage.startsWith('ja')) {
-			tokenConvertRate = 4;
-		}
-		console.log(`User Language: ${userLanguage}, Token Convert Rate: ${tokenConvertRate}`);
-		updateModelCostsWithTokenConversion();
 		// 初回読み込み時に色を生成し、状態変数に保存
 		modelData.forEach((model) => {
 			colors[model.name] = getRandomColor();
@@ -327,15 +299,6 @@
 			or
 			<a href="https://lunary.ai/anthropic-tokenizer" class="anchor" target="_blank"
 				>Anthropic Tokenizer</a
-			>
-		</div>
-		<div class="flex items-center space-x-4">
-			<span>Select Token Convert Rate: {tokenConvertRate}</span>
-			<button class="btn btn-sm variant-filled" on:click={() => setTokenConvertRate(4)}
-				>Alphabet languages</button
-			>
-			<button class="btn btn-sm variant-outline" on:click={() => setTokenConvertRate(1)}
-				>Chinese Japanese Hangul</button
 			>
 		</div>
 	</div>
