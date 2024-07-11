@@ -3,7 +3,7 @@
 	import Chart from 'chart.js/auto';
 	import { modelStore } from '$lib/models';
 	import type { ModelData } from '$lib/types';
-
+	import { calculateTokens } from '$lib/index';
 	let systemTokens = 500;
 	let inputTokens = 100;
 	let outputTokens = 500;
@@ -41,7 +41,12 @@
 			unsubscribe();
 		};
 	});
-
+	interface ResultType {
+		iteration: number;
+		totalInputTokens: number;
+		totalOutputTokens: number;
+		[key: string]: string | number;
+	}
 	$: {
 		if (
 			systemTokens !== undefined &&
@@ -50,6 +55,27 @@
 			iterations !== undefined
 		) {
 			calculateAICosts();
+			for (let i = 0; i < iterations; i++) {
+				const tokens = calculateTokens(systemTokens, inputTokens, outputTokens, i + 1);
+				console.log('Iteration: ' + (i + 1));
+				console.log('Total Input Tokens: ' + tokens.totalInputTokens);
+				console.log('Total Output Tokens: ' + tokens.totalOutputTokens);
+				let result: ResultType = {
+					iteration: i + 1,
+					totalInputTokens: tokens.totalInputTokens,
+					totalOutputTokens: tokens.totalOutputTokens
+				};
+				modelData.forEach((model) => {
+					const inputCost =
+						((tokens.totalInputTokens * model.inputCost) / oneMillion) * selectedCurrency.rate;
+					const outputCost =
+						((tokens.totalOutputTokens * model.outputCost) / oneMillion) * selectedCurrency.rate;
+					const totalCost = inputCost + outputCost;
+					result[`${model.name}`] = totalCost.toFixed(3);
+					console.log('Total Cost: ' + totalCost);
+				});
+				results.push(result);
+			}
 		}
 	}
 
@@ -82,7 +108,6 @@
 				cumulativeCost = currentCost + previousCost;
 				iterationResult[`${model.name}`] = cumulativeCost;
 			});
-			results.push(iterationResult);
 			previousCost = cumulativeCost;
 			totalInputTokens += inputTokens + cumulativeTokens;
 			cumulativeTokens += inputTokens + outputTokens;
