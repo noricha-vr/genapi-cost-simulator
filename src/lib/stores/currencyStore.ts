@@ -1,10 +1,5 @@
 import { writable } from 'svelte/store';
-
-export interface Currency {
-    code: string;
-    rate: number;
-    symbol: string;
-}
+import type { Currency } from '$lib/types';
 
 const initialCurrencies: Currency[] = [
     { code: 'USD', rate: 1, symbol: '$' },

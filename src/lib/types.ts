@@ -4,3 +4,9 @@ export type ModelData = {
     outputCost: number;
     active: boolean;
 };
+
+export type Currency = {
+    code: string;
+    rate: number;
+    symbol: string;
+};
