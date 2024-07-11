@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	import Chart from 'chart.js/auto';
 	import { modelStore } from '$lib/models';
-	import type { ModelData } from '$lib/types';
+	import type { ModelData, Currency } from '$lib/types';
 	import { calculateTokens, formatCurrency } from '$lib/index';
 	let systemTokens = 500;
 	let inputTokens = 100;
