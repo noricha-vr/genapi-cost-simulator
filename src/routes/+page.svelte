@@ -54,28 +54,12 @@
 			outputTokens !== undefined &&
 			iterations !== undefined
 		) {
-			calculateAICosts();
-			for (let i = 0; i < iterations; i++) {
-				const tokens = calculateTokens(systemTokens, inputTokens, outputTokens, i + 1);
-				console.log('Iteration: ' + (i + 1));
-				console.log('Total Input Tokens: ' + tokens.totalInputTokens);
-				console.log('Total Output Tokens: ' + tokens.totalOutputTokens);
-				let result: ResultType = {
-					iteration: i + 1,
-					totalInputTokens: tokens.totalInputTokens,
-					totalOutputTokens: tokens.totalOutputTokens
-				};
-				modelData.forEach((model) => {
-					const inputCost =
-						((tokens.totalInputTokens * model.inputCost) / oneMillion) * selectedCurrency.rate;
-					const outputCost =
-						((tokens.totalOutputTokens * model.outputCost) / oneMillion) * selectedCurrency.rate;
-					const totalCost = inputCost + outputCost;
-					result[`${model.name}`] = totalCost.toFixed(3);
-					console.log('Total Cost: ' + totalCost);
-				});
-				results.push(result);
-			}
+			const { results, totalInputTokens, totalOutputTokens } = calculateAPICosts(
+				systemTokens,
+				inputTokens,
+				outputTokens,
+				iterations
+			);
 		}
 	}
 
@@ -83,39 +67,45 @@
 		updateChart();
 	}
 
-	function calculateAICosts() {
-		console.log(
-			`SystemTokens: ${systemTokens}, inputTokens: ${inputTokens}, outputTokens: ${outputTokens}, iterations: ${iterations}`
-		);
-
+	function calculateAPICosts(
+		systemTokens: number,
+		inputTokens: number,
+		outputTokens: number,
+		iterations: number
+	): {
+		results: any[];
+		totalInputTokens: number;
+		totalOutputTokens: number;
+	} {
 		results = [];
 		totalInputTokens = 0;
 		totalOutputTokens = 0;
 
-		let cumulativeTokens = 0;
-		let previousCost = 0;
-
 		for (let i = 0; i < iterations; i++) {
-			const iterationResult: any = {
-				iteration: i + 1
+			const tokens = calculateTokens(systemTokens, inputTokens, outputTokens, i + 1);
+			console.debug('Iteration: ' + (i + 1));
+			console.debug('Total Input Tokens: ' + tokens.totalInputTokens);
+			console.debug('Total Output Tokens: ' + tokens.totalOutputTokens);
+			totalInputTokens = tokens.totalInputTokens;
+			totalOutputTokens = tokens.totalOutputTokens;
+			let result: ResultType = {
+				iteration: i + 1,
+				totalInputTokens: tokens.totalInputTokens,
+				totalOutputTokens: tokens.totalOutputTokens
 			};
-			let cumulativeCost = 0;
 			modelData.forEach((model) => {
 				const inputCost =
-					((systemTokens + inputTokens + cumulativeTokens) * model.inputCost) / oneMillion;
-				const outputCost = (outputTokens * model.outputCost) / oneMillion;
-				const currentCost = (inputCost + outputCost) * selectedCurrency.rate;
-				cumulativeCost = currentCost + previousCost;
-				iterationResult[`${model.name}`] = cumulativeCost;
+					((tokens.totalInputTokens * model.inputCost) / oneMillion) * selectedCurrency.rate;
+				const outputCost =
+					((tokens.totalOutputTokens * model.outputCost) / oneMillion) * selectedCurrency.rate;
+				const totalCost = inputCost + outputCost;
+				result[`${model.name}`] = totalCost.toFixed(3);
+				console.debug('Total Cost: ' + totalCost);
 			});
-			previousCost = cumulativeCost;
-			totalInputTokens += inputTokens + cumulativeTokens;
-			cumulativeTokens += inputTokens + outputTokens;
-			totalOutputTokens += outputTokens;
+			results.push(result);
 		}
-		// システムトークンは一度だけ加算
-		totalInputTokens += systemTokens;
-		console.log(results);
+
+		return { results, totalInputTokens, totalOutputTokens };
 	}
 
 	function updateChart() {
@@ -241,7 +231,6 @@
 		modelData.forEach((model) => {
 			colors[model.name] = getRandomColor();
 		});
-		calculateAICosts();
 	});
 </script>
 
