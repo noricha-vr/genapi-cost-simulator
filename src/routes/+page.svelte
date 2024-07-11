@@ -210,8 +210,6 @@
 	}
 
 	onMount(() => {
-		// クライアントのブラウザの言語設定を取得
-		const userLanguage = navigator.language || navigator.language;
 		// 初回読み込み時に色を生成し、状態変数に保存
 		modelData.forEach((model) => {
 			colors[model.name] = getRandomColor();
