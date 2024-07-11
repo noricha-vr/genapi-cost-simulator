@@ -68,7 +68,7 @@
 
 		let cumulativeTokens = 0;
 		let previousCost = 0;
-		const conversionRate = selectedCurrency.rate;
+
 		for (let i = 0; i < iterations; i++) {
 			const iterationResult: any = {
 				iteration: i + 1
@@ -78,7 +78,7 @@
 				const inputCost =
 					((systemTokens + inputTokens + cumulativeTokens) * model.inputCost) / oneMillion;
 				const outputCost = (outputTokens * model.outputCost) / oneMillion;
-				const currentCost = (inputCost + outputCost) * conversionRate;
+				const currentCost = (inputCost + outputCost) * selectedCurrency.rate;
 				cumulativeCost = currentCost + previousCost;
 				iterationResult[`${model.name}`] = cumulativeCost;
 			});
