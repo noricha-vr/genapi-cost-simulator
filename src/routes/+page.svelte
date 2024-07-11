@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import Chart from 'chart.js/auto';
+	import { modelData } from '$lib/models';
 
 	let systemTokens = 500;
 	let inputTokens = 100;
@@ -23,39 +24,6 @@
 		{ code: 'GBP', rate: 0.77 }
 	];
 	let selectedCurrency = currencies[0];
-
-	type ModelData = {
-		name: string;
-		inputCost: number;
-		outputCost: number;
-		active: boolean;
-		inputTextCost?: number;
-		outputTextCost?: number;
-	};
-	let modelData: ModelData[] = [
-		// 費用は100万トークンあたりのUSD価格
-		// OpenAI
-		{ name: 'gpt-4o', inputCost: 5.0, outputCost: 15.0, active: true },
-		{ name: 'gpt-3.5-turbo', inputCost: 0.5, outputCost: 1.5, active: true },
-		{ name: 'gpt-3.5-turbo(fine-tuning)', inputCost: 3.0, outputCost: 6.0, active: false },
-		// Anthropic
-		{ name: 'claude-3-opus', inputCost: 15.0, outputCost: 75.0, active: false },
-		{ name: 'claude-3-5-sonnet', inputCost: 3.0, outputCost: 15.0, active: true },
-		{ name: 'claude-3-haiku', inputCost: 0.25, outputCost: 1.25, active: true },
-		// Google
-		{
-			name: 'gemini-1.5-pro',
-			inputCost: 3.5,
-			outputCost: 7.0,
-			active: true
-		},
-		{
-			name: 'gemini-1.5-flash',
-			inputCost: 0.35,
-			outputCost: 0.7,
-			active: true
-		}
-	];
 
 	// 色を保持するための状態変数
 	let colors: { [key: string]: string } = {};

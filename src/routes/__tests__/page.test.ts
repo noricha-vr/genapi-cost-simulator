@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest';
+import { modelData } from '$lib/models';
 
 function calculateTokens(
     systemTokens: number,
