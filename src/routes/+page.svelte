@@ -349,10 +349,8 @@
 					<a href="https://www.anthropic.com/pricing#anthropic-api" class="anchor" target="_blank"
 						>Claude Pricing</a
 					>
-					<a
-						href="https://cloud.google.com/vertex-ai/generative-ai/pricing"
-						class="anchor"
-						target="_blank">Gemini Pricing</a
+					<a href="https://ai.google.dev/pricing?hl" class="anchor" target="_blank"
+						>Gemini Pricing</a
 					>
 				</p>
 			</div>
