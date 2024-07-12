@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import Chart from 'chart.js/auto';
-	import type { ModelData, Currency } from '$lib/types';
+	import type { ModelData, Currency, ChartResult } from '$lib/types';
 
-	export let results: any[];
+	export let results: ChartResult[];
 	export let selectedCurrency: Currency;
 	export let modelData: ModelData[];
 
