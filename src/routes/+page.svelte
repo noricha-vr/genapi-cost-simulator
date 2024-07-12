@@ -5,6 +5,7 @@
 	import type { ModelData, Currency, ChartResult } from '$lib/types';
 	import { calculateTokens, formatCurrency } from '$lib/index';
 	import CostChart from '$lib/components/CostChart.svelte';
+	import HowTo from '$lib/components/howTo.svelte';
 	let systemTokens = 500;
 	let inputTokens = 100;
 	let outputTokens = 500;
@@ -354,6 +355,7 @@
 			</div>
 		</div>
 	{/if}
+	<HowTo />
 </div>
 
 <style>
