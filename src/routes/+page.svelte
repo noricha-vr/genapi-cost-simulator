@@ -107,6 +107,11 @@
 	function updateChart(results: any[], selectedCurrency: Currency) {
 		console.log('updateChart');
 
+		if (!chartCanvas) {
+			console.error('Chart canvas is not initialized');
+			return;
+		}
+
 		if (chart) {
 			chart.destroy();
 		}
@@ -201,7 +206,10 @@
 		if (modelIndex !== -1) {
 			modelData[modelIndex] = { ...modelData[modelIndex], active: !modelData[modelIndex].active };
 			modelData = [...modelData]; // Trigger reactivity
-			updateChart(results, selectedCurrency);
+			results = results.map((result) => {
+				result[modelName] = modelData[modelIndex].active ? result[modelName] : null;
+				return result;
+			});
 		}
 	}
 
