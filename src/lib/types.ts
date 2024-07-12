@@ -10,3 +10,10 @@ export type Currency = {
     rate: number;
     symbol: string;
 };
+
+export interface ChartResult {
+    iteration: number;
+    totalInputTokens: number;
+    totalOutputTokens: number;
+    [key: string]: string | number;
+}

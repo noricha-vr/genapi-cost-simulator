@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	import Chart from 'chart.js/auto';
 	import { modelStore } from '$lib/models';
-	import type { ModelData, Currency } from '$lib/types';
+	import type { ModelData, Currency, ChartResult } from '$lib/types';
 	import { calculateTokens, formatCurrency } from '$lib/index';
 	import CostChart from '$lib/components/CostChart.svelte';
 	let systemTokens = 500;
@@ -19,7 +19,7 @@
 
 	const oneMillion = 1000000;
 
-	const currencies = [
+	const currencies: Currency[] = [
 		{ code: 'USD', rate: 1, symbol: '$' },
 		{ code: 'EUR', rate: 0.92, symbol: '€' },
 		{ code: 'JPY', rate: 160, symbol: '¥' },
@@ -42,12 +42,7 @@
 			unsubscribe();
 		};
 	});
-	interface ResultType {
-		iteration: number;
-		totalInputTokens: number;
-		totalOutputTokens: number;
-		[key: string]: string | number;
-	}
+
 	$: {
 		if (
 			systemTokens !== undefined &&
@@ -89,7 +84,7 @@
 			console.debug('Total Output Tokens: ' + tokens.totalOutputTokens);
 			totalInputTokens = tokens.totalInputTokens;
 			totalOutputTokens = tokens.totalOutputTokens;
-			let result: ResultType = {
+			let result: ChartResult = {
 				iteration: i + 1,
 				totalInputTokens: tokens.totalInputTokens,
 				totalOutputTokens: tokens.totalOutputTokens
