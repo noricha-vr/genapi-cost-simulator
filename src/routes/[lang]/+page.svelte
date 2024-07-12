@@ -6,6 +6,16 @@
 	import { calculateTokens, formatCurrency } from '$lib/index';
 	import CostChart from '$lib/components/CostChart.svelte';
 	import HowTo from '$lib/components/howTo.svelte';
+	import * as m from '$paraglide/messages';
+	import { languageTag, setLanguageTag } from '$paraglide/runtime.js';
+	import { page } from '$app/stores';
+
+	// url params lang を取得
+	const lang = $page.params.lang;
+	if (lang === 'en' || lang === 'ja') {
+		setLanguageTag(lang);
+	}
+
 	let systemTokens = 500;
 	let inputTokens = 100;
 	let outputTokens = 500;
@@ -147,7 +157,7 @@
 							display: true,
 							text: 'Iteration',
 							font: {
-								size: 14 // フォントサイズを大きくする
+								size: 14 // フォントサ��ズを大きくする
 							}
 						},
 						ticks: {
@@ -246,6 +256,10 @@
 	</div>
 </header>
 
+<h1>{languageTag()}</h1>
+
+{m.helloWorld()}
+{m.greeting({ name: '太郎' })}
 <div class="container mx-auto p-4 space-y-8">
 	<div class="card p-4 variant-soft">
 		<div class="grid grid-cols-1 md:grid-cols-5 gap-4">
