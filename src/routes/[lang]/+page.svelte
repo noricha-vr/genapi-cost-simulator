@@ -155,9 +155,9 @@
 					x: {
 						title: {
 							display: true,
-							text: 'Iteration',
+							text: m.iterations(),
 							font: {
-								size: 14 // フォントサ��ズを大きくする
+								size: 14 // フォントサイズを大きくする
 							}
 						},
 						ticks: {
@@ -169,7 +169,7 @@
 					y: {
 						title: {
 							display: true,
-							text: `Cumulative Cost (${selectedCurrency.symbol})`,
+							text: `${m.cumulativeCost()} (${selectedCurrency.symbol})`,
 							font: {
 								size: 14 // フォントサイズを大きくする
 							}
@@ -249,38 +249,34 @@
 				/>
 			</svg>
 			<div>
-				<h1 class="text-4xl font-extrabold tracking-tight">AI Cost Simulator</h1>
-				<h2 class="block text-yellow-300 text-2xl mt-1">Generative AI API Cost Simulation</h2>
+				<h1 class="text-4xl font-extrabold tracking-tight">{m.aiCostSimulator()}</h1>
+				<h2 class="block text-yellow-300 text-2xl mt-1">{m.generativeAiApiCostSimulation()}</h2>
 			</div>
 		</div>
 	</div>
 </header>
 
-<h1>{languageTag()}</h1>
-
-{m.helloWorld()}
-{m.greeting({ name: '太郎' })}
 <div class="container mx-auto p-4 space-y-8">
 	<div class="card p-4 variant-soft">
 		<div class="grid grid-cols-1 md:grid-cols-5 gap-4">
 			<label class="label">
-				<span>System Tokens:</span>
+				<span>{m.systemTokens()}</span>
 				<input type="number" bind:value={systemTokens} min="0" class="input" />
 			</label>
 			<label class="label">
-				<span>Input Tokens:</span>
+				<span>{m.inputTokens()}</span>
 				<input type="number" bind:value={inputTokens} min="0" class="input" />
 			</label>
 			<label class="label">
-				<span>Output Tokens:</span>
+				<span>{m.outputTokens()}</span>
 				<input type="number" bind:value={outputTokens} min="0" class="input" />
 			</label>
 			<label class="label">
-				<span>Iterations:</span>
+				<span>{m.iterations()}</span>
 				<input type="number" bind:value={iterations} min="1" max="9999" class="input" />
 			</label>
 			<label class="label">
-				<span>Currency:</span>
+				<span>{m.currency()}</span>
 				<select bind:value={selectedCurrency} class="input">
 					{#each currencies as currency}
 						<option value={currency}>{currency.code}</option>
@@ -289,13 +285,13 @@
 			</label>
 		</div>
 		<div class="mt-3">
-			Verify token count using:
+			{m.verifyTokenCount()}
 			<a href="https://platform.openai.com/tokenizer" class="anchor" target="_blank"
-				>OpenAI Tokenizer</a
+				>{m.openAiTokenizer()}</a
 			>
 			or
 			<a href="https://lunary.ai/anthropic-tokenizer" class="anchor" target="_blank"
-				>Anthropic Tokenizer</a
+				>{m.anthropicTokenizer()}</a
 			>
 		</div>
 	</div>
@@ -306,16 +302,16 @@
 
 	{#if results.length > 0}
 		<div class="card p-4 variant-soft">
-			<h2 class="h2 mb-4">Final Results</h2>
+			<h2 class="h2 mb-4">{m.finalResults()}</h2>
 			<div class="flex flex-wrap gap-4 mb-4">
 				<div>
-					<span class="font-bold">Total Input Tokens:</span>
+					<span class="font-bold">{m.totalInputTokens()}</span>
 					<span class="text-2xl font-semibold text-primary-500"
 						>{totalInputTokens.toLocaleString()}</span
 					>
 				</div>
 				<div>
-					<span class="font-bold">Total Output Tokens:</span>
+					<span class="font-bold">{m.totalOutputTokens()}</span>
 					<span class="text-2xl font-semibold text-primary-500"
 						>{totalOutputTokens.toLocaleString()}</span
 					>
@@ -326,10 +322,10 @@
 					<thead>
 						<tr>
 							<th class="py-1"></th>
-							<th class="py-1 table-cell-fit">Model Name</th>
-							<th class="py-1 text-right">Input Cost</th>
-							<th class="py-1 text-right">Output Cost</th>
-							<th class="py-1 text-right">Total Cost</th>
+							<th class="py-1 table-cell-fit">{m.modelName()}</th>
+							<th class="py-1 text-right">{m.inputCost()}</th>
+							<th class="py-1 text-right">{m.outputCost()}</th>
+							<th class="py-1 text-right">{m.totalCost()}</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -352,18 +348,19 @@
 					</tbody>
 				</table>
 			</div>
-			<div class="mt-3">* You can select the model you want to see the cost.</div>
+			<div class="mt-3">{m.selectModelCost()}</div>
 			<div class="mt-3">
-				<h3>Pricing source</h3>
+				<h3>{m.pricingSource()}</h3>
 				<p>
-					Pricing is based on the following source:
-					<a href="https://openai.com/api/pricing/" class="anchor" target="_blank">OpenAI Pricing</a
+					{m.pricingBasedOn()}
+					<a href="https://openai.com/api/pricing/" class="anchor" target="_blank"
+						>{m.openAiPricing()}</a
 					>
 					<a href="https://www.anthropic.com/pricing#anthropic-api" class="anchor" target="_blank"
-						>Claude Pricing</a
+						>{m.claudePricing()}</a
 					>
 					<a href="https://ai.google.dev/pricing?hl" class="anchor" target="_blank"
-						>Gemini Pricing</a
+						>{m.geminiPricing()}</a
 					>
 				</p>
 			</div>
