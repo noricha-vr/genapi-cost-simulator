@@ -71,10 +71,6 @@
 		}
 	}
 
-	$: if (selectedCurrency !== undefined && results.length > 0 && chartCanvas) {
-		updateChart(results, selectedCurrency);
-	}
-
 	function calculateAPICosts(
 		systemTokens: number,
 		inputTokens: number,
@@ -114,92 +110,6 @@
 		}
 
 		return { results, totalInputTokens, totalOutputTokens };
-	}
-
-	function updateChart(results: any[], selectedCurrency: Currency) {
-		console.log('updateChart');
-
-		if (!chartCanvas) {
-			console.error('Chart canvas is not initialized');
-			return;
-		}
-
-		if (chart) {
-			chart.destroy();
-		}
-
-		const ctx = chartCanvas.getContext('2d');
-		if (!ctx) {
-			console.error('Failed to get 2D context from canvas');
-			return;
-		}
-
-		const datasets = modelData.map((model) => ({
-			label: model.name,
-			data: results.map((result) => result[model.name]),
-			borderColor: colors[model.name],
-			backgroundColor: colors[model.name],
-			fill: false,
-			hidden: !model.active // ここで初期表示状態を設定
-		}));
-
-		chart = new Chart(ctx, {
-			type: 'line',
-			data: {
-				labels: results.map((result) => result.iteration),
-				datasets: datasets
-			},
-			options: {
-				responsive: true,
-				maintainAspectRatio: false,
-				scales: {
-					x: {
-						title: {
-							display: true,
-							text: m.iterations(),
-							font: {
-								size: 14 // フォントサイズを大きくする
-							}
-						},
-						ticks: {
-							font: {
-								size: 12 // 軸のラベルのフォントサイズを大きくする
-							}
-						}
-					},
-					y: {
-						title: {
-							display: true,
-							text: `${m.cumulativeCost()} (${selectedCurrency.symbol})`,
-							font: {
-								size: 14 // フォントサイズを大きくする
-							}
-						},
-						ticks: {
-							callback: function (value: number | string) {
-								return selectedCurrency.symbol + Number(value).toFixed(2);
-							},
-							font: {
-								size: 14 // 軸のラベルのフォントサイズを大きくする
-							}
-						}
-					}
-				},
-				plugins: {
-					legend: {
-						position: 'top',
-						labels: {
-							boxWidth: 12,
-							usePointStyle: true,
-							pointStyle: 'circle',
-							font: {
-								size: 14 // 凡例のフォントサイズを大きくする
-							}
-						}
-					}
-				}
-			}
-		});
 	}
 
 	function calculateModelCosts(model: any, inputTokens: number, outputTokens: number) {
