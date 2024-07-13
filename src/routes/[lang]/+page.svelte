@@ -9,9 +9,10 @@
 	import * as m from '$paraglide/messages';
 	import { languageTag, setLanguageTag } from '$paraglide/runtime.js';
 	import { page } from '$app/stores';
-
+	import langStore, { updateLang, toggleLang } from '$lib/stores/langStore';
+	import type { SupportedLang } from '$lib/stores/langStore';
 	// url params lang を取得
-	const lang = $page.params.lang;
+	let lang: SupportedLang = $page.params.lang as SupportedLang;
 	if (lang === 'en' || lang === 'ja') {
 		setLanguageTag(lang);
 	}
@@ -224,6 +225,11 @@
 		}
 	}
 
+	function handleLangChange() {
+		const newLang = lang === 'en' ? 'ja' : 'en';
+		window.location.href = '/' + newLang;
+	}
+
 	onMount(() => {
 		// 初回読み込み時に色を生成し、状態変数に保存
 		modelData.forEach((model) => {
@@ -232,7 +238,9 @@
 	});
 </script>
 
-<header class="bg-gradient-to-r from-blue-600 to-indigo-800 text-white py-2 px-4 shadow-lg">
+<header
+	class="bg-gradient-to-r from-blue-600 to-indigo-800 text-white py-2 px-4 shadow-lg relative"
+>
 	<div class="container mx-auto">
 		<div class="flex items-center space-x-4">
 			<svg
@@ -252,6 +260,9 @@
 				<h1 class="text-4xl font-extrabold tracking-tight">{m.aiCostSimulator()}</h1>
 				<h2 class="block text-yellow-300 text-2xl mt-1">{m.generativeAiApiCostSimulation()}</h2>
 			</div>
+			<button class="btn btn-primary absolute right-4 bottom-2" on:click={handleLangChange}>
+				{lang === 'en' ? '日本語' : 'English'}
+			</button>
 		</div>
 	</div>
 </header>
@@ -375,5 +386,15 @@
 	}
 	.table thead th {
 		padding: 0.8rem;
+	}
+	.btn {
+		background-color: #1d4ed8;
+		color: white;
+		padding: 0.5rem 1rem;
+		border-radius: 0.375rem;
+		cursor: pointer;
+	}
+	.btn:hover {
+		background-color: #2563eb;
 	}
 </style>

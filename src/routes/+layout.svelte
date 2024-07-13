@@ -5,12 +5,12 @@
 	import { setLanguageTag } from '$paraglide/runtime';
 	import { onMount } from 'svelte';
 
-	onMount(() => {
-		const lang = $page.params.lang;
-		if (lang) {
-			setLanguageTag(lang);
-		}
-	});
+	// onMount(() => {
+	// 	const lang = $page.params.lang;
+	// 	if (lang) {
+	// 		setLanguageTag(lang);
+	// 	}
+	// });
 </script>
 
 <AppShell>
