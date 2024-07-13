@@ -9,7 +9,7 @@
 	import { currencyStore } from '$lib/stores/currencyStore';
 	import Header from '$lib/components/Header.svelte';
 	import Footer from '$lib/components/Footer.svelte';
-
+	import MetaTag from '$lib/components/MetaTag.svelte';
 	let systemTokens = 500;
 	let inputTokens = 100;
 	let outputTokens = 500;
@@ -110,7 +110,10 @@
 </script>
 
 <Header />
-
+<MetaTag
+	title={m.generativeAiApiCostSimulation() + ' - ' + m.aiCostSimulator()}
+	description={m.description()}
+/>
 <div class="container mx-auto p-4 space-y-8">
 	<div class="card p-4 variant-soft">
 		<div class="grid grid-cols-1 md:grid-cols-5 gap-4">
