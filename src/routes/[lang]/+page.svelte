@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import Chart from 'chart.js/auto';
 	import { modelStore } from '$lib/models';
 	import type { ModelData, Currency, ChartResult } from '$lib/types';
 	import { calculateTokens, formatCurrency, calculateModelCosts } from '$lib/index';
@@ -10,6 +9,7 @@
 	import type { SupportedLang } from '$lib/stores/langStore';
 	import langStore from '$lib/stores/langStore';
 	import { currencyStore } from '$lib/stores/currencyStore';
+	import Header from '$lib/components/Header.svelte';
 
 	let systemTokens = 500;
 	let inputTokens = 100;
@@ -120,47 +120,9 @@
 			});
 		}
 	}
-
-	function handleLangChange(event: Event) {
-		const target = event.target as HTMLSelectElement;
-		const selectedLang = target.value || 'en';
-		window.location.href = '/' + selectedLang;
-	}
 </script>
 
-<header
-	class="bg-gradient-to-r from-blue-600 to-indigo-800 text-white py-2 px-4 shadow-lg relative"
->
-	<div class="container mx-auto">
-		<div class="flex items-center space-x-4">
-			<svg
-				class="w-12 h-12 text-yellow-300"
-				fill="currentColor"
-				viewBox="0 0 20 20"
-				xmlns="http://www.w3.org/2000/svg"
-			>
-				<path d="M13 7H7v6h6V7z" />
-				<path
-					fill-rule="evenodd"
-					d="M7 2a1 1 0 012 0v1h2V2a1 1 0 112 0v1h2a2 2 0 012 2v2h1a1 1 0 110 2h-1v2h1a1 1 0 110 2h-1v2a2 2 0 01-2 2h-2v1a1 1 0 11-2 0v-1H9v1a1 1 0 11-2 0v-1H5a2 2 0 01-2-2v-2H2a1 1 0 110-2h1V9H2a1 1 0 010-2h1V5a2 2 0 012-2h2V2zM5 5h10v10H5V5z"
-					clip-rule="evenodd"
-				/>
-			</svg>
-			<div>
-				<h1 class="text-4xl font-extrabold tracking-tight">{m.aiCostSimulator()}</h1>
-				<h2 class="block text-yellow-300 text-2xl mt-1">{m.generativeAiApiCostSimulation()}</h2>
-			</div>
-			<select
-				class="select select-sm absolute bg-blue-700 right-4 bottom-2 w-32"
-				on:change={handleLangChange}
-				bind:value={lang}
-			>
-				<option value="en">English</option>
-				<option value="ja">日本語</option>
-			</select>
-		</div>
-	</div>
-</header>
+<Header />
 
 <div class="container mx-auto p-4 space-y-8">
 	<div class="card p-4 variant-soft">
