@@ -225,9 +225,10 @@
 		}
 	}
 
-	function handleLangChange() {
-		const newLang = lang === 'en' ? 'ja' : 'en';
-		window.location.href = '/' + newLang;
+	function handleLangChange(event: Event) {
+		const target = event.target as HTMLSelectElement;
+		const selectedLang = target.value || 'en';
+		window.location.href = '/' + selectedLang;
 	}
 
 	onMount(() => {
@@ -260,9 +261,14 @@
 				<h1 class="text-4xl font-extrabold tracking-tight">{m.aiCostSimulator()}</h1>
 				<h2 class="block text-yellow-300 text-2xl mt-1">{m.generativeAiApiCostSimulation()}</h2>
 			</div>
-			<button class="btn btn-primary absolute right-4 bottom-2" on:click={handleLangChange}>
-				{lang === 'en' ? '日本語' : 'English'}
-			</button>
+			<select
+				class="select select-sm absolute bg-blue-700 right-4 bottom-2 w-32"
+				on:change={handleLangChange}
+				bind:value={lang}
+			>
+				<option value="en">English</option>
+				<option value="ja">日本語</option>
+			</select>
 		</div>
 	</div>
 </header>
