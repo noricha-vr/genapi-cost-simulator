@@ -97,7 +97,7 @@
 	}
 
 	function toggleModelVisibility(modelName: string) {
-		const modelIndex = modelData.findIndex((m) => m.name === modelName);
+		const modelIndex = modelData.findIndex((model) => model.name === modelName);
 		if (modelIndex !== -1) {
 			modelData[modelIndex] = { ...modelData[modelIndex], active: !modelData[modelIndex].active };
 			modelData = [...modelData]; // Trigger reactivity
