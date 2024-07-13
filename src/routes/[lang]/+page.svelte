@@ -5,17 +5,10 @@
 	import type { ModelData, Currency, ChartResult } from '$lib/types';
 	import { calculateTokens, formatCurrency } from '$lib/index';
 	import CostChart from '$lib/components/CostChart.svelte';
-	import HowTo from '$lib/components/howTo.svelte';
+	import HowTo from '$lib/components/HowTo.svelte';
 	import * as m from '$paraglide/messages';
-	import { languageTag, setLanguageTag } from '$paraglide/runtime.js';
-	import { page } from '$app/stores';
-	import langStore, { updateLang, toggleLang } from '$lib/stores/langStore';
 	import type { SupportedLang } from '$lib/stores/langStore';
-	// url params lang を取得
-	let lang: SupportedLang = $page.params.lang as SupportedLang;
-	if (lang === 'en' || lang === 'ja') {
-		setLanguageTag(lang);
-	}
+	import langStore from '$lib/stores/langStore';
 
 	let systemTokens = 500;
 	let inputTokens = 100;
@@ -44,14 +37,21 @@
 
 	// modelStoreを購読
 	let modelData: ModelData[];
-	const unsubscribe = modelStore.subscribe((value) => {
+	const unsubscribe = modelStore.subscribe((value: ModelData[]) => {
 		modelData = value;
+	});
+
+	// langStoreを購読
+	let lang: SupportedLang;
+	const unsubscribeLang = langStore.subscribe((value: SupportedLang) => {
+		lang = value;
 	});
 
 	// コンポーネントのアンマウント時にunsubscribe
 	onMount(() => {
 		return () => {
 			unsubscribe();
+			unsubscribeLang();
 		};
 	});
 
