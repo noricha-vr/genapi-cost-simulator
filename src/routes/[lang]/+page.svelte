@@ -9,6 +9,7 @@
 	import * as m from '$paraglide/messages';
 	import type { SupportedLang } from '$lib/stores/langStore';
 	import langStore from '$lib/stores/langStore';
+	import { currencyStore } from '$lib/stores/currencyStore';
 
 	let systemTokens = 500;
 	let inputTokens = 100;
@@ -21,13 +22,8 @@
 
 	const oneMillion = 1000000;
 
-	const currencies: Currency[] = [
-		{ code: 'USD', rate: 1, symbol: '$' },
-		{ code: 'EUR', rate: 0.92, symbol: '€' },
-		{ code: 'JPY', rate: 160, symbol: '¥' },
-		{ code: 'GBP', rate: 0.77, symbol: '£' }
-	];
-	let selectedCurrency = currencies[0];
+	let selectedCurrency: Currency;
+	let currencies: Currency[];
 
 	// modelStoreを購読
 	let modelData: ModelData[];
@@ -41,11 +37,18 @@
 		lang = value;
 	});
 
+	// currencyStoreを購読
+	const unsubscribeCurrency = currencyStore.subscribe((value: Currency[]) => {
+		currencies = value;
+		selectedCurrency = currencies[0];
+	});
+
 	// コンポーネントのアンマウント時にunsubscribe
 	onMount(() => {
 		return () => {
 			unsubscribe();
 			unsubscribeLang();
+			unsubscribeCurrency();
 		};
 	});
 
