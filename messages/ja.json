@@ -1,6 +1,6 @@
 {
     "$schema": "https://inlang.com/schema/inlang-message-format",
-    "aiCostSimulator": "AI コストシミュレーター",
+    "aiCostSimulator": "AI Cost Simulator",
     "generativeAiApiCostSimulation": "生成AI APIコストシミュレーション",
     "systemTokens": "システムトークン：",
     "inputTokens": "入力トークン：",
@@ -24,7 +24,7 @@
     "openAiPricing": "OpenAI 価格表",
     "claudePricing": "Claude 価格表",
     "geminiPricing": "Gemini 価格表",
-    "howToTitle": "AI コストシミュレーター：ChatGPT、Claude、Gemini などの使用コストを計算！",
+    "howToTitle": "AI Cost Simulator：ChatGPT、Claude、Gemini などの使用コストを計算！",
     "howToDescription": "このツールは、OpenAI の ChatGPT、Anthropic の Claude、Google の Gemini など、人気の AI モデルの使用コストを正確に計算するシミュレーターです。AI プロジェクトの予算策定や、異なる AI サービス間のコスト比較に不可欠です。",
     "howToHowToUse": "使用方法：",
     "howToStep1Title": "会話設定を入力",
