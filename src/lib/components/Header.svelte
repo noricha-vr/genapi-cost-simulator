@@ -42,7 +42,7 @@
 				<h2 class="block text-yellow-300 text-2xl mt-1">{m.generativeAiApiCostSimulation()}</h2>
 			</div>
 			<select
-				class="select select-sm absolute bg-blue-700 right-4 bottom-2 w-32"
+				class="select select-sm absolute bg-blue-700 right-4 top-2 w-32"
 				on:change={handleLangChange}
 				bind:value={lang}
 			>
