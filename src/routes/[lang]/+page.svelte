@@ -3,7 +3,7 @@
 	import Chart from 'chart.js/auto';
 	import { modelStore } from '$lib/models';
 	import type { ModelData, Currency, ChartResult } from '$lib/types';
-	import { calculateTokens, formatCurrency } from '$lib/index';
+	import { calculateTokens, formatCurrency, calculateModelCosts } from '$lib/index';
 	import CostChart from '$lib/components/CostChart.svelte';
 	import HowTo from '$lib/components/HowTo.svelte';
 	import * as m from '$paraglide/messages';
@@ -17,10 +17,7 @@
 
 	let totalInputTokens = 0;
 	let totalOutputTokens = 0;
-
-	let chart: Chart | undefined;
 	let results: any[] = [];
-	let chartCanvas: HTMLCanvasElement;
 
 	const oneMillion = 1000000;
 
@@ -31,9 +28,6 @@
 		{ code: 'GBP', rate: 0.77, symbol: '£' }
 	];
 	let selectedCurrency = currencies[0];
-
-	// 色を保持するための状態変数
-	let colors: { [key: string]: string } = {};
 
 	// modelStoreを購読
 	let modelData: ModelData[];
@@ -112,13 +106,6 @@
 		return { results, totalInputTokens, totalOutputTokens };
 	}
 
-	function calculateModelCosts(model: any, inputTokens: number, outputTokens: number) {
-		const inputCost = (inputTokens * model.inputCost) / oneMillion;
-		const outputCost = (outputTokens * model.outputCost) / oneMillion;
-		const totalCost = inputCost + outputCost;
-		return { inputCost, outputCost, totalCost };
-	}
-
 	function toggleModelVisibility(modelName: string) {
 		const modelIndex = modelData.findIndex((m) => m.name === modelName);
 		if (modelIndex !== -1) {
@@ -136,13 +123,6 @@
 		const selectedLang = target.value || 'en';
 		window.location.href = '/' + selectedLang;
 	}
-
-	onMount(() => {
-		// 初回読み込み時に色を生成し、状態変数に保存
-		modelData.forEach((model) => {
-			colors[model.name] = model.color;
-		});
-	});
 </script>
 
 <header

@@ -1,4 +1,6 @@
 export { currencyStore } from '$lib/stores/currencyStore';
+const oneMillion = 1000000;
+
 export function calculateTokens(
     systemTokens: number,
     inputTokens: number,
@@ -33,4 +35,11 @@ export function formatCurrency(amount: number, currencyCode: string): string {
         default:
             return `${currencyCode} ${formattedAmount}`;
     }
+}
+
+export function calculateModelCosts(model: any, inputTokens: number, outputTokens: number) {
+    const inputCost = (inputTokens * model.inputCost) / oneMillion;
+    const outputCost = (outputTokens * model.outputCost) / oneMillion;
+    const totalCost = inputCost + outputCost;
+    return { inputCost, outputCost, totalCost };
 }
