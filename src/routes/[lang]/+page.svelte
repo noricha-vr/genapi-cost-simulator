@@ -1,13 +1,11 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { onMount, onDestroy } from 'svelte';
 	import { modelStore } from '$lib/models';
 	import type { ModelData, Currency, ChartResult } from '$lib/types';
 	import { calculateTokens, formatCurrency, calculateModelCosts } from '$lib/index';
 	import CostChart from '$lib/components/CostChart.svelte';
 	import HowTo from '$lib/components/HowTo.svelte';
 	import * as m from '$paraglide/messages';
-	import type { SupportedLang } from '$lib/stores/langStore';
-	import langStore from '$lib/stores/langStore';
 	import { currencyStore } from '$lib/stores/currencyStore';
 	import Header from '$lib/components/Header.svelte';
 
@@ -24,32 +22,20 @@
 
 	let selectedCurrency: Currency;
 	let currencies: Currency[];
-
-	// modelStoreを購読
 	let modelData: ModelData[];
-	const unsubscribe = modelStore.subscribe((value: ModelData[]) => {
-		modelData = value;
-	});
 
-	// langStoreを購読
-	let lang: SupportedLang;
-	const unsubscribeLang = langStore.subscribe((value: SupportedLang) => {
-		lang = value;
-	});
+	const unsubscribers = [
+		modelStore.subscribe((value: ModelData[]) => {
+			modelData = value;
+		}),
+		currencyStore.subscribe((value: Currency[]) => {
+			currencies = value;
+			selectedCurrency = currencies[0];
+		})
+	];
 
-	// currencyStoreを購読
-	const unsubscribeCurrency = currencyStore.subscribe((value: Currency[]) => {
-		currencies = value;
-		selectedCurrency = currencies[0];
-	});
-
-	// コンポーネントのアンマウント時にunsubscribe
-	onMount(() => {
-		return () => {
-			unsubscribe();
-			unsubscribeLang();
-			unsubscribeCurrency();
-		};
+	onDestroy(() => {
+		unsubscribers.forEach((unsubscribe) => unsubscribe());
 	});
 
 	$: {
@@ -200,7 +186,7 @@
 						{#each modelData as model}
 							{@const costs = calculateModelCosts(model, totalInputTokens, totalOutputTokens)}
 							<tr class="custom-font-lg" on:click={() => toggleModelVisibility(model.name)}>
-								<td class="custom-font-lg　text-center">{model.active ? '✔' : ''}</td>
+								<td class="custom-font-lg text-center">{model.active ? '✔' : ''}</td>
 								<td class="custom-font-lg w-1/3">{model.name}</td>
 								<td class="text-right custom-font-lg w-1/6">
 									{formatCurrency(costs.inputCost * selectedCurrency.rate, selectedCurrency.code)}
