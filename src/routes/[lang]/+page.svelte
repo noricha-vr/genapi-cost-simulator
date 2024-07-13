@@ -8,6 +8,7 @@
 	import * as m from '$paraglide/messages';
 	import { currencyStore } from '$lib/stores/currencyStore';
 	import Header from '$lib/components/Header.svelte';
+	import Footer from '$lib/components/Footer.svelte';
 
 	let systemTokens = 500;
 	let inputTokens = 100;
@@ -222,6 +223,7 @@
 	{/if}
 	<HowTo />
 </div>
+<Footer />
 
 <style>
 	.custom-font-lg {

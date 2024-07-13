@@ -48,5 +48,7 @@
     "howToUsefulFeaturesCurrencySwitching": "通貨の切り替えにより、すべてのモデルの結果が即座に更新されます",
     "howToUsefulFeaturesTokenCountLinks": "異なる AI サービス間で正確な長さの見積もりを行うためのトークン数チェックリンク",
     "howToConclusion": "このシミュレーターを使用することで、ChatGPT、Claude、Gemini を使用した AI プロジェクトのコストを事前に予測し、予算超過を防ぐことができます。また、これらの主要な AI サービス間の費用対効果を簡単に比較でき、あなたのニーズに最適な AI を選択するのに役立ちます。",
-    "howToCallToAction": "様々な設定を試して、あなたの AI プロジェクトに最適なモデルの選択肢を見つけてください！"
+    "howToCallToAction": "様々な設定を試して、あなたの AI プロジェクトに最適なモデルの選択肢を見つけてください！",
+    "footerCopyright": "All rights reserved.",
+    "footerGithub": "GitHub"
 }

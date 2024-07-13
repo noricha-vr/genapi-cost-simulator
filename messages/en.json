@@ -48,5 +48,7 @@
     "howToUsefulFeaturesCurrencySwitching": "Currency switching updates results immediately for all models",
     "howToUsefulFeaturesTokenCountLinks": "Links to check token counts for accurate length estimation across different AI services",
     "howToConclusion": "With this simulator, you can anticipate costs for AI projects using ChatGPT, Claude, or Gemini in advance, preventing budget overruns. It also allows easy comparison of cost-effectiveness between these leading AI services, helping you choose the optimal AI for your needs.",
-    "howToCallToAction": "Try various settings to find the best choice among various AI models for your AI project!"
+    "howToCallToAction": "Try various settings to find the best choice among various AI models for your AI project!",
+    "footerCopyright": "All rights reserved.",
+    "footerGithub": "GitHub"
 }
