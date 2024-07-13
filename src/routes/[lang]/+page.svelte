@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onMount, onDestroy } from 'svelte';
+	import { onDestroy } from 'svelte';
 	import { modelStore } from '$lib/models';
 	import type { ModelData, Currency, ChartResult } from '$lib/types';
 	import { calculateTokens, formatCurrency, calculateModelCosts } from '$lib/index';
