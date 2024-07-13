@@ -202,10 +202,6 @@
 		});
 	}
 
-	function getRandomColor() {
-		return '#' + Math.floor(Math.random() * 16777215).toString(16);
-	}
-
 	function calculateModelCosts(model: any, inputTokens: number, outputTokens: number) {
 		const inputCost = (inputTokens * model.inputCost) / oneMillion;
 		const outputCost = (outputTokens * model.outputCost) / oneMillion;
@@ -234,7 +230,7 @@
 	onMount(() => {
 		// 初回読み込み時に色を生成し、状態変数に保存
 		modelData.forEach((model) => {
-			colors[model.name] = getRandomColor();
+			colors[model.name] = model.color;
 		});
 	});
 </script>

@@ -3,6 +3,7 @@ export type ModelData = {
     inputCost: number;
     outputCost: number;
     active: boolean;
+    color: string;
 };
 
 export type Currency = {

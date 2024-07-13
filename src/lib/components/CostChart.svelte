@@ -13,7 +13,7 @@
 
 	onMount(() => {
 		modelData.forEach((model) => {
-			colors[model.name] = getRandomColor();
+			colors[model.name] = model.color;
 		});
 		updateChart();
 		return () => {
@@ -25,10 +25,6 @@
 
 	$: if (results.length > 0 && selectedCurrency && chartCanvas) {
 		updateChart();
-	}
-
-	function getRandomColor() {
-		return '#' + Math.floor(Math.random() * 16777215).toString(16);
 	}
 
 	function updateChart() {
