@@ -20,8 +20,8 @@ const initialModelData: ModelData[] = [
     },
     {
         name: 'gemini-1.5-flash',
-        inputCost: 0.35,
-        outputCost: 0.7,
+        inputCost: 0.075,
+        outputCost: 0.3,
         active: true,
         color: '#1E90FF'  // Dodger Blue
     }
